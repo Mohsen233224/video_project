@@ -1,1 +1,87 @@
 
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video</title>
+
+<style>
+body{
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:#000;
+  font-family:Arial, sans-serif;
+}
+
+.video-container{
+  width:100%;
+  max-width:350px;
+  aspect-ratio:9/16; /* مقاس عمودي مثل تيك توك */
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+}
+
+.video-container iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.credit{
+  position:absolute;
+  bottom:-25px;
+  right:10px;
+  font-size:12px;
+  color:#aaa;
+}
+
+.credit a{
+  color:#fff;
+  text-decoration:none;
+}
+copyright {
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+.copyright {
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="video-container">
+  <iframe 
+    src="https://www.kapwing.com/e/699defbcd806274638e96627"
+    allow="autoplay; gyroscope;"
+    allowfullscreen
+    referrerpolicy="strict-origin"
+    title="Kapwing Video">
+  </iframe>
+</div>
+<footer class="copyright">
+  جميع الحقوق محفوظة لدى محسن © 2026
+</footer>
+</body>
+</html>
