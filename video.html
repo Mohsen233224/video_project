@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المعرض</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#111;
+  color:#fff;
+  text-align:center;
+}
+
+.title{
+  margin-top:30px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:15px;
+  padding:20px;
+}
+
+.card{
+  background:#1c1c1c;
+  padding:10px;
+  border-radius:15px;
+  position:relative;
+}
+
+.card img,
+.card video{
+  width:100%;
+  border-radius:10px;
+}
+
+.menu{
+  position:absolute;
+  top:8px;
+  left:8px;
+  cursor:pointer;
+  font-size:20px;
+}
+
+.actions{
+  display:none;
+  position:absolute;
+  top:35px;
+  left:8px;
+  background:#333;
+  border-radius:8px;
+  padding:5px;
+}
+
+.actions button{
+  background:none;
+  color:white;
+  border:none;
+  cursor:pointer;
+  padding:5px 10px;
+}
+
+.like{
+  margin-top:8px;
+  cursor:pointer;
+  color:#aaa;
+  font-size:16px;
+}
+
+.link{
+  color:#00f2ff;
+  text-decoration:none;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<h2 class="title">قسم الفيديوهات</h2>
+<div id="videos" class="grid"></div>
+
+<h2 class="title">قسم الصور</h2>
+<div id="images" class="grid"></div>
+
+<br>
+<a href="index.html" class="link">← الرجوع للإضافة</a>
+
+<script>
+function loadMedia() {
+  const videosDiv = document.getElementById("videos");
+  const imagesDiv = document.getElementById("images");
+
+  videosDiv.innerHTML = "";
+  imagesDiv.innerHTML = "";
+
+  let data = JSON.parse(localStorage.getItem("media")) || [];
+
+  data.forEach(item => {
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const menu = document.createElement("div");
+    menu.className = "menu";
+    menu.innerHTML = "⋮";
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const delBtn = document.createElement("button");
+    delBtn.innerText = "حذف";
+    delBtn.onclick = () => deleteMedia(item.id);
+
+    actions.appendChild(delBtn);
+
+    menu.onclick = () => {
+      actions.style.display =
+        actions.style.display === "block" ? "none" : "block";
+    };
+
+    let mediaElement;
+
+    if (item.type === "image") {
+      mediaElement = document.createElement("img");
+      mediaElement.src = item.src;
+    } else {
+      mediaElement = document.createElement("video");
+      mediaElement.src = item.src;
+      mediaElement.controls = true;
+    }
+
+    const like = document.createElement("div");
+    like.className = "like";
+    like.innerHTML = "❤️ " + item.likes;
+
+    like.onclick = () => {
+      item.likes++;
+      localStorage.setItem("media", JSON.stringify(data));
+      loadMedia();
+    };
+
+    card.appendChild(menu);
+    card.appendChild(actions);
+    card.appendChild(mediaElement);
+    card.appendChild(like);
+
+    if (item.type === "image") {
+      imagesDiv.appendChild(card);
+    } else {
+      videosDiv.appendChild(card);
+    }
+  });
+}
+
+function deleteMedia(id) {
+  let data = JSON.parse(localStorage.getItem("media")) || [];
+  data = data.filter(item => item.id !== id);
+  localStorage.setItem("media", JSON.stringify(data));
+  loadMedia();
+}
+
+document.addEventListener("DOMContentLoaded", loadMedia);
+</script>
+
+</body>
+</html>

@@ -1,86 +1,103 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video</title>
+<title>إضافة محتوى</title>
 
 <style>
 body{
   margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  background:#000;
-  font-family:Arial, sans-serif;
-}
-
-.video-container{
-  width:100%;
-  max-width:350px;
-  aspect-ratio:9/16; /* مقاس عمودي مثل تيك توك */
-  position:relative;
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.6);
-}
-
-.video-container iframe{
-  width:100%;
-  height:100%;
-  border:0;
-}
-
-.credit{
-  position:absolute;
-  bottom:-25px;
-  right:10px;
-  font-size:12px;
-  color:#aaa;
-}
-
-.credit a{
+  font-family:Arial;
+  background:#111;
   color:#fff;
+  text-align:center;
+}
+
+.container{
+  margin-top:60px;
+}
+
+select,input,button{
+  padding:12px;
+  margin:10px;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
+}
+
+button{
+  background:#ff0050;
+  color:white;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:0.8;
+}
+
+.link{
+  color:#00f2ff;
   text-decoration:none;
-}
-copyright {
-  position: fixed;
-  bottom: 15px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 13px;
-  color: #aaa;
-  letter-spacing: 1px;
-}
-.copyright {
-  position: fixed;
-  bottom: 15px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 13px;
-  color: #aaa;
-  letter-spacing: 1px;
+  font-size:18px;
 }
 </style>
 </head>
-
 <body>
 
-<div class="video-container">
-  <iframe 
-    src="https://www.kapwing.com/e/699defbcd806274638e96627"
-    allow="autoplay; gyroscope;"
-    allowfullscreen
-    referrerpolicy="strict-origin"
-    title="Kapwing Video">
-  </iframe>
+<div class="container">
+  <h2>إضافة فيديو أو صورة</h2>
+
+  <select id="type">
+    <option value="image">صورة</option>
+    <option value="video">فيديو</option>
+  </select>
+
+  <br>
+
+  <input type="file" id="fileInput" accept="image/*,video/*">
+
+  <br>
+
+  <button onclick="saveMedia()">إضافة</button>
+
+  <br><br>
+
+  <a href="video.html" class="link">الانتقال لصفحة العرض →</a>
 </div>
-<footer class="copyright">
-  جميع الحقوق محفوظة لدى محسن © 2026
-</footer>
+
+<script>
+function saveMedia() {
+  const fileInput = document.getElementById("fileInput");
+  const type = document.getElementById("type").value;
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("اختر ملف أولاً");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function() {
+
+    const media = {
+      id: Date.now(),
+      type: type,
+      src: reader.result,
+      likes: 0
+    };
+
+    let data = JSON.parse(localStorage.getItem("media")) || [];
+    data.push(media);
+    localStorage.setItem("media", JSON.stringify(data));
+
+    alert("تمت الإضافة ✅");
+    fileInput.value = "";
+  };
+
+  reader.readAsDataURL(file);
+}
+</script>
+
 </body>
 </html>
