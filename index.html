@@ -96,12 +96,20 @@ select{
 .add-media{background:linear-gradient(135deg,#00ff99,#00ccff); color:#fff;}
 .send-media{background:linear-gradient(135deg,#ff0050,#ff9900); color:#fff;}
 .close-popup{background:#555;color:#fff;}
+header {
+  padding: 15px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 24px;
+  background: #111;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+}
 </style>
 </head>
 <body>
 
 <a class="link-page" href="video.html">عرض المحتوى →</a>
-
+<header>اضافة المحتوى</header>
 <select id="section">
   <option value="محسن الشريف">محسن الشريف</option>
   <option value="سلطان الأحمري">سلطان الأحمري</option>
@@ -117,7 +125,7 @@ select{
     <input type="text" id="titleInput" placeholder="عنوان الصورة أو الفيديو">
     <input type="file" id="fileInput" accept="image/*,video/*">
     <div>
-      <button class="add-media" onclick="document.getElementById('fileInput').click()">📁 اختر ملف</button>
+<button class="add-media" onclick="resetFile()">📁 اختر ملف</button>
       <button class="send-media" onclick="sendContent()">🚀 إرسال</button>
       <button class="close-popup" onclick="closePopup()">✕ إلغاء</button>
     </div>
@@ -138,9 +146,10 @@ let selectedFile = null;
 
 /* فتح وغلق popup */
 function openPopup(){document.getElementById('popup').classList.add('active');}
-function closePopup(){
+function closePopup() {
   document.getElementById('popup').classList.remove('active');
   document.getElementById('titleInput').value = '';
+  document.getElementById('fileInput').value = ''; // ← هذا هو الحل
   selectedFile = null;
 }
 
@@ -175,6 +184,11 @@ function sendContent(){
     window.location.href = "video.html";
   };
   reader.readAsDataURL(selectedFile);
+}
+function resetFile() {
+  const fileInput = document.getElementById('fileInput');
+  fileInput.value = '';
+  fileInput.click();
 }
 </script>
 
