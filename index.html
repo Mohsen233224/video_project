@@ -4,98 +4,177 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>إضافة محتوى</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
 body{
-  margin:0;
-  font-family:Arial;
-  background:#111;
+  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
   color:#fff;
-  text-align:center;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
-
-.container{
-  margin-top:60px;
-}
-
-select,input,button{
-  padding:12px;
-  margin:10px;
-  border-radius:8px;
+select{
+  padding:12px 15px;
+  margin-bottom:25px;
+  border-radius:15px;
   border:none;
+  background:#222;
+  color:#fff;
   font-size:16px;
 }
-
-button{
-  background:#ff0050;
-  color:white;
+.add-btn{
+  background:linear-gradient(135deg,#ff0050,#ff9900);
+  border:none;
+  padding:15px 40px;
+  border-radius:50px;
+  color:#fff;
+  font-size:20px;
   cursor:pointer;
+  font-weight:600;
+  box-shadow:0 6px 25px rgba(255,0,80,0.5);
+  transition:.3s;
 }
-
-button:hover{
-  opacity:0.8;
+.add-btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 10px 35px rgba(255,0,80,0.7);
 }
-
-.link{
-  color:#00f2ff;
+.link-page{
+  position:absolute;
+  top:20px;
+  left:20px;
+  color:#fff;
   text-decoration:none;
-  font-size:18px;
+  opacity:.7;
+  font-size:16px;
 }
+.link-page:hover{opacity:1;}
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.popup.active{display:flex;}
+.popup-content{
+  background:#1a1a1a;
+  padding:30px;
+  border-radius:20px;
+  width:90%;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 6px 20px rgba(255,0,80,0.5);
+  animation:fadeIn 0.3s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(0.9);}
+  to{opacity:1; transform:scale(1);}
+}
+.popup-content input[type="text"]{
+  width:100%;
+  padding:10px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:none;
+  background:#222;
+  color:#fff;
+}
+.popup-content button{
+  padding:10px 25px;
+  margin:5px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:600;
+}
+.add-media{background:linear-gradient(135deg,#00ff99,#00ccff); color:#fff;}
+.send-media{background:linear-gradient(135deg,#ff0050,#ff9900); color:#fff;}
+.close-popup{background:#555;color:#fff;}
 </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>إضافة فيديو أو صورة</h2>
+<a class="link-page" href="video.html">عرض المحتوى →</a>
 
-  <select id="type">
-    <option value="image">صورة</option>
-    <option value="video">فيديو</option>
-  </select>
+<select id="section">
+  <option value="محسن الشريف">محسن الشريف</option>
+  <option value="سلطان الأحمري">سلطان الأحمري</option>
+  <option value="مقعد الرشيدي">مقعد الرشيدي</option>
+</select>
 
-  <br>
+<button class="add-btn" onclick="openPopup()">➕ إضافة محتوى</button>
 
-  <input type="file" id="fileInput" accept="image/*,video/*">
-
-  <br>
-
-  <button onclick="saveMedia()">إضافة</button>
-
-  <br><br>
-
-  <a href="video.html" class="link">الانتقال لصفحة العرض →</a>
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h3>إضافة محتوى جديد</h3>
+    <input type="text" id="titleInput" placeholder="عنوان الصورة أو الفيديو">
+    <input type="file" id="fileInput" accept="image/*,video/*">
+    <div>
+      <button class="add-media" onclick="document.getElementById('fileInput').click()">📁 اختر ملف</button>
+      <button class="send-media" onclick="sendContent()">🚀 إرسال</button>
+      <button class="close-popup" onclick="closePopup()">✕ إلغاء</button>
+    </div>
+  </div>
 </div>
 
 <script>
-function saveMedia() {
-  const fileInput = document.getElementById("fileInput");
-  const type = document.getElementById("type").value;
-  const file = fileInput.files[0];
+/* إنشاء الأقسام لو غير موجودة */
+if(!localStorage.getItem("folders")){
+  localStorage.setItem("folders", JSON.stringify({
+    "محسن الشريف": [],
+    "سلطان الأحمري": [],
+    "مقعد الرشيدي": []
+  }));
+}
 
-  if (!file) {
-    alert("اختر ملف أولاً");
-    return;
-  }
+let selectedFile = null;
 
-  const reader = new FileReader();
-  reader.onload = function() {
+/* فتح وغلق popup */
+function openPopup(){document.getElementById('popup').classList.add('active');}
+function closePopup(){
+  document.getElementById('popup').classList.remove('active');
+  document.getElementById('titleInput').value = '';
+  selectedFile = null;
+}
 
-    const media = {
-      id: Date.now(),
+/* حفظ الملف عند الاختيار */
+document.getElementById("fileInput").addEventListener("change", function(e){
+  selectedFile = e.target.files[0];
+});
+
+/* إرسال المحتوى */
+function sendContent(){
+  let title = document.getElementById("titleInput").value.trim();
+  if(!title){alert("أدخل عنوان المحتوى"); return;}
+  if(!selectedFile){alert("اختر ملف من جهازك"); return;}
+
+  let section = document.getElementById("section").value;
+  let reader = new FileReader();
+  reader.onload = function(event){
+    let folders = JSON.parse(localStorage.getItem("folders"));
+    let type = selectedFile.type.startsWith("video") ? "video" : "image";
+
+    folders[section].push({
       type: type,
-      src: reader.result,
-      likes: 0
-    };
+      url: event.target.result,
+      title: title,
+      likes:0
+    });
+    localStorage.setItem("folders", JSON.stringify(folders));
+    closePopup();
 
-    let data = JSON.parse(localStorage.getItem("media")) || [];
-    data.push(media);
-    localStorage.setItem("media", JSON.stringify(data));
-
-    alert("تمت الإضافة ✅");
-    fileInput.value = "";
+    // حفظ القسم الحالي للعرض في الفيديو
+    localStorage.setItem("currentSection", section);
+    window.location.href = "video.html";
   };
-
-  reader.readAsDataURL(file);
+  reader.readAsDataURL(selectedFile);
 }
 </script>
 

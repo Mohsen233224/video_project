@@ -4,166 +4,231 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المعرض</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#111;
-  color:#fff;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+body{background:#0f0f0f;color:#fff;}
+header{
+  padding:15px;
   text-align:center;
+  font-weight:800;
+  font-size:24px;
+  background:#111;
+  box-shadow:0 2px 15px rgba(0,0,0,0.5);
 }
-
-.title{
-  margin-top:30px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+.tabs{
+  display:flex;
+  justify-content:center;
   gap:15px;
-  padding:20px;
+  padding:15px;
+  flex-wrap:wrap;
 }
-
-.card{
-  background:#1c1c1c;
-  padding:10px;
-  border-radius:15px;
-  position:relative;
-}
-
-.card img,
-.card video{
-  width:100%;
-  border-radius:10px;
-}
-
-.menu{
-  position:absolute;
-  top:8px;
-  left:8px;
-  cursor:pointer;
-  font-size:20px;
-}
-
-.actions{
-  display:none;
-  position:absolute;
-  top:35px;
-  left:8px;
-  background:#333;
-  border-radius:8px;
-  padding:5px;
-}
-
-.actions button{
-  background:none;
-  color:white;
+.tab-btn{
+  padding:10px 25px;
+  border-radius:30px;
   border:none;
   cursor:pointer;
-  padding:5px 10px;
+  background:#1f1f1f;
+  color:#fff;
+  font-weight:600;
+  transition:.3s;
+  box-shadow:0 2px 10px rgba(0,0,0,0.4);
 }
-
-.like{
-  margin-top:8px;
+.tab-btn.active{
+  background:linear-gradient(135deg,#ff0050,#ff9900);
+  box-shadow:0 4px 20px rgba(255,0,80,0.6);
+}
+.container{
+  padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:20px;
+}
+.card{
+  background:linear-gradient(145deg,#1a1a1a,#222);
+  border-radius:20px;
+  overflow:hidden;
   cursor:pointer;
-  color:#aaa;
-  font-size:16px;
+  position:relative;
+  transition:.3s;
+  box-shadow:0 4px 15px rgba(0,0,0,0.6);
 }
-
-.link{
-  color:#00f2ff;
-  text-decoration:none;
-  font-size:18px;
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 8px 25px rgba(255,0,80,0.6);
 }
+.card video,.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.actions{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+}
+.actions button{
+  background:none;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s;
+}
+.actions button:hover{color:#ff3c78;}
+.viewer{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.95);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.viewer.active{display:flex;}
+.viewer video,.viewer img{
+  max-width:90%;
+  max-height:90%;
+  object-fit:contain;
+  border-radius:15px;
+}
+.close-view{
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:30px;
+  cursor:pointer;
+  color:#fff;
+  background:rgba(0,0,0,0.4);
+  padding:5px 12px;
+  border-radius:10px;
+  transition:.3s;
+}
+.close-view:hover{background:rgba(255,0,80,0.6);}
 </style>
 </head>
 <body>
 
-<h2 class="title">قسم الفيديوهات</h2>
-<div id="videos" class="grid"></div>
+<header>المعرض</header>
 
-<h2 class="title">قسم الصور</h2>
-<div id="images" class="grid"></div>
+<div class="tabs">
+  <button class="tab-btn" onclick="changeSection('محسن الشريف',this)">محسن الشريف</button>
+  <button class="tab-btn" onclick="changeSection('سلطان الأحمري',this)">سلطان الأحمري</button>
+  <button class="tab-btn" onclick="changeSection('مقعد الرشيدي',this)">مقعد الرشيدي</button>
+</div>
 
-<br>
-<a href="index.html" class="link">← الرجوع للإضافة</a>
+<div class="container" id="mediaContainer"></div>
+
+<div class="viewer" id="viewer">
+  <span class="close-view" onclick="closeViewer()">✕</span>
+  <div id="viewerContent"></div>
+</div>
 
 <script>
-function loadMedia() {
-  const videosDiv = document.getElementById("videos");
-  const imagesDiv = document.getElementById("images");
+let container = document.getElementById("mediaContainer");
+let currentSection = "محسن الشريف";
 
-  videosDiv.innerHTML = "";
-  imagesDiv.innerHTML = "";
-
-  let data = JSON.parse(localStorage.getItem("media")) || [];
-
-  data.forEach(item => {
-
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const menu = document.createElement("div");
-    menu.className = "menu";
-    menu.innerHTML = "⋮";
-
-    const actions = document.createElement("div");
-    actions.className = "actions";
-
-    const delBtn = document.createElement("button");
-    delBtn.innerText = "حذف";
-    delBtn.onclick = () => deleteMedia(item.id);
-
-    actions.appendChild(delBtn);
-
-    menu.onclick = () => {
-      actions.style.display =
-        actions.style.display === "block" ? "none" : "block";
+/* التأكد من وجود الأقسام */
+function ensureFolders(){
+  let data = localStorage.getItem("folders");
+  if(!data){
+    let defaultFolders = {
+      "محسن الشريف":[],
+      "سلطان الأحمري":[],
+      "مقعد الرشيدي":[]
     };
-
-    let mediaElement;
-
-    if (item.type === "image") {
-      mediaElement = document.createElement("img");
-      mediaElement.src = item.src;
-    } else {
-      mediaElement = document.createElement("video");
-      mediaElement.src = item.src;
-      mediaElement.controls = true;
-    }
-
-    const like = document.createElement("div");
-    like.className = "like";
-    like.innerHTML = "❤️ " + item.likes;
-
-    like.onclick = () => {
-      item.likes++;
-      localStorage.setItem("media", JSON.stringify(data));
-      loadMedia();
-    };
-
-    card.appendChild(menu);
-    card.appendChild(actions);
-    card.appendChild(mediaElement);
-    card.appendChild(like);
-
-    if (item.type === "image") {
-      imagesDiv.appendChild(card);
-    } else {
-      videosDiv.appendChild(card);
-    }
-  });
+    localStorage.setItem("folders", JSON.stringify(defaultFolders));
+    return defaultFolders;
+  }
+  return JSON.parse(data);
 }
 
-function deleteMedia(id) {
-  let data = JSON.parse(localStorage.getItem("media")) || [];
-  data = data.filter(item => item.id !== id);
-  localStorage.setItem("media", JSON.stringify(data));
+function getData(){ return ensureFolders(); }
+function saveData(data){ localStorage.setItem("folders", JSON.stringify(data)); }
+
+/* استرجاع القسم المختار من index.html */
+let savedSection = localStorage.getItem("currentSection");
+if(savedSection){
+  currentSection = savedSection;
+  localStorage.removeItem("currentSection");
+}
+
+/* تفعيل الزر الصحيح */
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  if(btn.textContent === currentSection) btn.classList.add("active");
+  else btn.classList.remove("active");
+});
+
+function changeSection(name,btn){
+  currentSection = name;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
   loadMedia();
 }
 
-document.addEventListener("DOMContentLoaded", loadMedia);
+function loadMedia(){
+  container.innerHTML = "";
+  let data = getData();
+  let items = data[currentSection] || [];
+
+  if(items.length === 0){
+    container.innerHTML = "<p style='opacity:.5;text-align:center;width:100%;margin-top:50px;'>لا يوجد محتوى في هذا القسم</p>";
+    return;
+  }
+
+  items.forEach((item,index)=>{
+    let card = document.createElement("div");
+    card.className = "card";
+
+    let media = item.type==="video"
+      ? `<video src="${item.url}" muted></video>`
+      : `<img src="${item.url}">`;
+
+    card.innerHTML = `
+      ${media}
+      <div class="actions">
+        <button onclick="event.stopPropagation(); like(${index})">❤️ ${item.likes}</button>
+        <button onclick="event.stopPropagation(); removeItem(${index})">🗑 حذف</button>
+      </div>
+    `;
+
+    card.onclick = ()=>openViewer(item);
+    container.appendChild(card);
+  });
+}
+
+function like(index){
+  let data = getData();
+  data[currentSection][index].likes++;
+  saveData(data);
+  loadMedia();
+}
+
+function removeItem(index){
+  let data = getData();
+  data[currentSection].splice(index,1);
+  saveData(data);
+  loadMedia();
+}
+
+function openViewer(item){
+  let viewer = document.getElementById("viewer");
+  let content = document.getElementById("viewerContent");
+
+  content.innerHTML = item.type==="video"
+    ? `<video src="${item.url}" controls autoplay></video>`
+    : `<img src="${item.url}">`;
+
+  viewer.classList.add("active");
+}
+
+function closeViewer(){
+  document.getElementById("viewer").classList.remove("active");
+}
+
+loadMedia();
 </script>
 
 </body>
