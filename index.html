@@ -3,194 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إضافة محتوى</title>
+<title>المعرض الخاص</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
-body{
-  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-select{
-  padding:12px 15px;
-  margin-bottom:25px;
-  border-radius:15px;
-  border:none;
-  background:#222;
-  color:#fff;
-  font-size:16px;
-}
-.add-btn{
-  background:linear-gradient(135deg,#ff0050,#ff9900);
-  border:none;
-  padding:15px 40px;
-  border-radius:50px;
-  color:#fff;
-  font-size:20px;
-  cursor:pointer;
-  font-weight:600;
-  box-shadow:0 6px 25px rgba(255,0,80,0.5);
-  transition:.3s;
-}
-.add-btn:hover{
-  transform:scale(1.08);
-  box-shadow:0 10px 35px rgba(255,0,80,0.7);
-}
-.link-page{
-  position:absolute;
-  top:20px;
-  left:20px;
-  color:#fff;
-  text-decoration:none;
-  opacity:.7;
-  font-size:16px;
-}
-.link-page:hover{opacity:1;}
-.popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-}
+body{background: radial-gradient(circle at top,#1b1b1b,#070707);color:#fff;min-height:100vh;overflow-x:hidden;}
+header{padding:20px;text-align:center;font-size:28px;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);}
+.box03D{background: rgba(255,255,255,.05);backdrop-filter: blur(12px);border:1px solid rgba(255,255,255,.08);border-radius: 20px;padding: 15px;width: fit-content;margin: 20px auto;display: flex; gap:12px;}
+.tabs{display:flex;gap:12px;}
+.tab-btn{padding:12px 22px;border-radius:40px;border:none;cursor:pointer;background:#1c1c1c;color:#aaa;transition:.4s;font-weight:600;}
+.tab-btn:hover{transform:translateY(-3px);color:#fff;}
+.tab-btn.active{background:linear-gradient(135deg,#ff0050,#ff9900);color:#fff;box-shadow:0 0 20px rgba(255,0,80,.5);}
+.container{padding:25px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:25px;}
+.card{background:rgba(255,255,255,.05);border-radius:18px;overflow:hidden;cursor:pointer;transition:.4s;backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);animation:fadeUp .6s ease;}
+.card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,.6);}
+.card img,.card video{width:100%;height:200px;object-fit:cover;}
+.actions{display:flex;justify-content:space-between;padding:12px;}
+.actions button{border:none;background:#111;color:#fff;padding:8px 14px;border-radius:25px;cursor:pointer;transition:.3s;}
+.actions button:hover{background:linear-gradient(135deg,#ff0050,#ff9900);}
+.viewer{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:999;animation:fade .4s;}
+.viewer.active{display:flex;}
+.viewer img,.viewer video{max-width:92%;max-height:92%;border-radius:15px;box-shadow:0 0 40px #000;}
+.close-view{position:absolute;top:25px;right:25px;font-size:35px;cursor:pointer;transition:.3s;}
+.close-view:hover{transform:rotate(90deg);color:#ff0050;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);}}
+@keyframes fade{from{opacity:0} to{opacity:1}}
+.empty{text-align:center;opacity:.5;font-size:18px;grid-column:1/-1;}
+.add-btn{position:fixed;bottom:105px;left:25px;width:65px;height:65px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;text-decoration:none;color:#fff;background:linear-gradient(135deg,#ff0050,#ff9900);box-shadow:0 0 20px rgba(255,0,80,.6),0 10px 30px rgba(0,0,0,.6);transition:.35s;z-index:1000;}
+.add-btn:hover{transform:scale(1.15) rotate(90deg);box-shadow:0 0 35px rgba(255,0,80,1),0 15px 40px rgba(0,0,0,.8);}
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:2000;}
 .popup.active{display:flex;}
-.popup-content{
-  background:#1a1a1a;
-  padding:30px;
-  border-radius:20px;
-  width:90%;
-  max-width:400px;
-  text-align:center;
-  box-shadow:0 6px 20px rgba(255,0,80,0.5);
-  animation:fadeIn 0.3s ease;
-}
-@keyframes fadeIn{
-  from{opacity:0; transform:scale(0.9);}
-  to{opacity:1; transform:scale(1);}
-}
-.popup-content input[type="text"]{
-  width:100%;
-  padding:10px;
-  margin-bottom:15px;
-  border-radius:10px;
-  border:none;
-  background:#222;
-  color:#fff;
-}
-.popup-content button{
-  padding:10px 25px;
-  margin:5px;
-  border:none;
-  border-radius:30px;
-  cursor:pointer;
-  font-weight:600;
-}
-.add-media{background:linear-gradient(135deg,#00ff99,#00ccff); color:#fff;}
-.send-media{background:linear-gradient(135deg,#ff0050,#ff9900); color:#fff;}
-.close-popup{background:#555;color:#fff;}
-header {
-  padding: 15px;
-  text-align: center;
-  font-weight: 800;
-  font-size: 24px;
-  background: #111;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-}
+.popup-content{background:#1a1a1a;padding:25px;border-radius:20px;width:90%;max-width:400px;text-align:center;}
+.popup-content input{width:100%;padding:10px;margin-bottom:15px;border-radius:10px;border:none;background:#222;color:#fff;}
+.popup-content button{padding:10px 20px;margin:5px;border:none;border-radius:25px;cursor:pointer;color:#fff;}
+.choose{background:#00ccff;}
+.send{background:#ff0050;}
+.close{background:#555;}
+select{padding:12px;border-radius:12px;border:none;background:#222;color:#fff;margin-bottom:20px;width:100%;}
+.coding-box{position:relative;text-align:center;padding:15px 45px;margin-top:20px;background: rgba(255, 255, 255, 0.05);backdrop-filter: blur(10px);border-radius: 15px;border:1px solid rgba(255,255,255,.08);color:#aaa;font-size:14px;transition:.3s;}
+.coding-box:hover{color:#fff;box-shadow:0 0 20px rgba(255,0,80,0.5);}
 </style>
 </head>
 <body>
 
-<a class="link-page" href="video.html">عرض المحتوى →</a>
-<header>اضافة المحتوى</header>
-<select id="section">
-  <option value="محسن الشريف">محسن الشريف</option>
-  <option value="سلطان الأحمري">سلطان الأحمري</option>
-  <option value="مقعد الرشيدي">مقعد الرشيدي</option>
-</select>
+<header>✨ المعرض الخاص</header>
 
-<button class="add-btn" onclick="openPopup()">➕ إضافة محتوى</button>
+<div class="box03D">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="changeSection('محسن الشريف',this)">محسن الشريف</button>
+    <button class="tab-btn" onclick="changeSection('سلطان الأحمري',this)">سلطان الأحمري</button>
+    <button class="tab-btn" onclick="changeSection('مقعد الرشيدي',this)">مقعد الرشيدي</button>
+  </div>
+</div>
 
-<!-- Popup -->
+<div class="container" id="mediaContainer"></div>
+
+<div class="viewer" id="viewer">
+  <span class="close-view" onclick="closeViewer()">✕</span>
+  <div id="viewerContent"></div>
+</div>
+
+<a href="javascript:void(0)" class="add-btn" onclick="openPopup()">＋</a>
+
+<div class="coding-box">
+  <p>جميع الحقوق محفوظة لدى المعرض الخاص © 2026
+  <hr />| تصميم وبرمجة محسن الشريف |</p>
+</div>
+
 <div class="popup" id="popup">
   <div class="popup-content">
-    <h3>إضافة محتوى جديد</h3>
-    <input type="text" id="titleInput" placeholder="عنوان الصورة أو الفيديو">
-    <input type="file" id="fileInput" accept="image/*,video/*">
-    <div>
-<button class="add-media" onclick="resetFile()">📁 اختر ملف</button>
-      <button class="send-media" onclick="sendContent()">🚀 إرسال</button>
-      <button class="close-popup" onclick="closePopup()">✕ إلغاء</button>
-    </div>
+    <h3>إضافة محتوى</h3>
+    <select id="sectionSelect">
+      <option>محسن الشريف</option>
+      <option>سلطان الأحمري</option>
+      <option>مقعد الرشيدي</option>
+    </select>
+    <input type="text" id="urlInput" placeholder="أدخل رابط صورة أو فيديو (URL)">
+    <input type="file" id="fileInput" accept="image/*,video/*" multiple hidden>
+    <button class="choose" onclick="pickFiles()">📁 اختيار ملفات</button>
+    <button class="send" onclick="sendContent()">🚀 إرسال</button>
+    <button class="close" onclick="closePopup()">إلغاء</button>
   </div>
 </div>
 
 <script>
-/* إنشاء الأقسام لو غير موجودة */
-if(!localStorage.getItem("folders")){
-  localStorage.setItem("folders", JSON.stringify({
-    "محسن الشريف": [],
-    "سلطان الأحمري": [],
-    "مقعد الرشيدي": []
-  }));
+let container=document.getElementById("mediaContainer");
+let currentSection="محسن الشريف";
+
+function ensureFolders(){
+  let data=localStorage.getItem("folders");
+  if(!data){
+    let folders={"محسن الشريف":[],"سلطان الأحمري":[],"مقعد الرشيدي":[]};
+    localStorage.setItem("folders",JSON.stringify(folders));
+    return folders;
+  }
+  return JSON.parse(data);
+}
+function getData(){return ensureFolders();}
+function saveData(d){localStorage.setItem("folders",JSON.stringify(d));}
+
+/* تغيير القسم */
+function changeSection(name,btn){
+  currentSection=name;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  loadMedia();
 }
 
-let selectedFile = null;
-
-/* فتح وغلق popup */
-function openPopup(){document.getElementById('popup').classList.add('active');}
-function closePopup() {
-  document.getElementById('popup').classList.remove('active');
-  document.getElementById('titleInput').value = '';
-  document.getElementById('fileInput').value = ''; // ← هذا هو الحل
-  selectedFile = null;
+/* تحميل المعرض */
+function loadMedia(){
+  container.innerHTML="";
+  let items=getData()[currentSection];
+  if(!items.length){container.innerHTML="<div class='empty'>لا يوجد محتوى بعد</div>"; return;}
+  items.forEach((item,index)=>{
+    let card=document.createElement("div");
+    card.className="card";
+    let media=item.type==="video"
+      ? `<video src="${item.url}" muted></video>`
+      : `<img src="${item.url}">`;
+    card.innerHTML=`${media}<div class="actions">
+      <button onclick="event.stopPropagation();like(${index})">❤️ ${item.likes}</button>
+      <button onclick="event.stopPropagation();removeItem(${index})">🗑 حذف</button>
+    </div>`;
+    card.onclick=()=>openViewer(item);
+    container.appendChild(card);
+  });
 }
 
-/* حفظ الملف عند الاختيار */
-document.getElementById("fileInput").addEventListener("change", function(e){
-  selectedFile = e.target.files[0];
-});
+/* لايك */
+function like(i){
+  let d=getData();
+  d[currentSection][i].likes++;
+  saveData(d);
+  loadMedia();
+}
 
-/* إرسال المحتوى */
+/* حذف */
+function removeItem(i){
+  let d=getData();
+  d[currentSection].splice(i,1);
+  saveData(d);
+  loadMedia();
+}
+
+/* عرض الصور والفيديو */
+function openViewer(item){
+  let viewer=document.getElementById("viewer");
+  let content=document.getElementById("viewerContent");
+  content.innerHTML=item.type==="video"
+    ? `<video src="${item.url}" controls autoplay></video>`
+    : `<img src="${item.url}">`;
+  viewer.classList.add("active");
+}
+
+function closeViewer(){
+  let viewer=document.getElementById("viewer");
+  let video=viewer.querySelector("video");
+  if(video){video.pause(); video.currentTime=0;}
+  viewer.classList.remove("active");
+}
+
+/* إضافة محتوى */
+let selectedFiles=[];
+function openPopup(){document.getElementById("popup").classList.add("active");}
+function closePopup(){document.getElementById("popup").classList.remove("active"); document.getElementById("fileInput").value=""; document.getElementById("urlInput").value=""; selectedFiles=[];}
+function pickFiles(){document.getElementById("fileInput").click();}
+document.getElementById("fileInput").addEventListener("change",(e)=>{selectedFiles=Array.from(e.target.files);});
+
 function sendContent(){
-  let title = document.getElementById("titleInput").value.trim();
-  if(!title){alert("أدخل عنوان المحتوى"); return;}
-  if(!selectedFile){alert("اختر ملف من جهازك"); return;}
+  let url=document.getElementById("urlInput").value.trim();
+  let section=document.getElementById("sectionSelect").value;
+  let folders=getData();
 
-  let section = document.getElementById("section").value;
-  let reader = new FileReader();
-  reader.onload = function(event){
-    let folders = JSON.parse(localStorage.getItem("folders"));
-    let type = selectedFile.type.startsWith("video") ? "video" : "image";
+  if(url){
+    let type = url.match(/\.(mp4|webm|ogg)$/i) ? "video" : "image";
+    folders[section].push({type:type,url:url,title:"رابط خارجي",likes:0});
+    saveData(folders); currentSection=section; loadMedia(); closePopup(); return;
+  }
 
-    folders[section].push({
-      type: type,
-      url: event.target.result,
-      title: title,
-      likes:0
-    });
-    localStorage.setItem("folders", JSON.stringify(folders));
-    closePopup();
+  if(selectedFiles.length===0) return alert("اختر ملفات أو أدخل رابط");
 
-    // حفظ القسم الحالي للعرض في الفيديو
-    localStorage.setItem("currentSection", section);
-    window.location.href = "video.html";
-  };
-  reader.readAsDataURL(selectedFile);
+  let done=0;
+  selectedFiles.forEach(file=>{
+    let reader=new FileReader();
+    reader.onload=function(e){
+      let type=file.type.startsWith("video")?"video":"image";
+      folders[section].push({type:type,url:e.target.result,title:"ملف محلي",likes:0});
+      done++;
+      if(done===selectedFiles.length){saveData(folders); currentSection=section; loadMedia(); closePopup();}
+    };
+    reader.readAsDataURL(file);
+  });
 }
-function resetFile() {
-  const fileInput = document.getElementById('fileInput');
-  fileInput.value = '';
-  fileInput.click();
-}
+
+loadMedia();
 </script>
-
 </body>
 </html>
