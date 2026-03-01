@@ -8,6 +8,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
 body{background:radial-gradient(circle at top,#1b1b1b,#070707);color:#fff;min-height:100vh;}
+#loaderScreen{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:25px;transition:opacity .7s ease,visibility .7s;}
+#loaderScreen.hide{opacity:0;visibility:hidden;}
+.loader{width:84px;height:84px;transform:rotate(45deg);position:relative;animation:animate 1.2s infinite ease-in-out;}
+.loader span{background:#ff6600;width:40px;height:40px;border-radius:5px;position:absolute;animation:animate_1 1.2s infinite ease-in-out both;}
+.loader span:nth-child(1){top:0;left:0;}
+.loader span:nth-child(2){top:0;right:0;background:red;}
+.loader span:nth-child(3){bottom:0;left:0;background:green;}
+.loader span:nth-child(4){bottom:0;right:0;background:purple;}
+@keyframes animate{0%,10%,100%{width:84px;height:84px;}65%{width:150px;height:150px;}}
+@keyframes animate_1{0%,30%{transform:rotate(0);}55%{background:transparent;transform:scale(.5);}100%{transform:rotate(180deg);}}
+.text_box{text-align:center;}
+.text_box b{font-size:28px;color:#111;display:block;}
+.text_box p{font-size:16px;color:#777;margin-top:6px;}
+.loading-dots span{display:inline-block;width:6px;height:6px;margin:0 2px;background:#777;border-radius:50%;animation:dotPulse 1s infinite ease-in-out;}
+.loading-dots span:nth-child(1){animation-delay:0s;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dotPulse{0%,80%,100%{transform:scale(0);}40%{transform:scale(1);}}
+#app{opacity:0;transition:1s;} #app.show{opacity:1;}
 header{padding:20px;text-align:center;font-size:26px;font-weight:800;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);}
 .box03D{display:flex;justify-content:center;margin:20px;gap:10px;}
 .tab-btn{padding:10px 20px;border:none;border-radius:30px;background:#1c1c1c;color:#aaa;cursor:pointer;transition:.3s;}
@@ -21,29 +40,37 @@ header{padding:20px;text-align:center;font-size:26px;font-weight:800;background:
 .viewer{position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;z-index:999;}
 .viewer.active{display:flex;}
 .viewer img,.viewer video{max-width:95%;max-height:95%;}
-.close-view{position:absolute;top:20px;right:25px;font-size:35px;cursor:pointer;z-index:1001;background:rgba(0,0,0,.5);padding:5px 12px;border-radius:10px;}
+.close-view{position:absolute;top:20px;right:25px;font-size:35px;cursor:pointer;background:rgba(0,0,0,.5);padding:5px 12px;border-radius:10px;}
 .add-btn{position:fixed;bottom:100px;left:25px;width:65px;height:65px;border-radius:50%;background:linear-gradient(135deg,#ff0050,#ff9900);display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;text-decoration:none;}
-.delete-section-btn{position:fixed;bottom:25px;left:25px;width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,#ff0000,#990000);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;text-decoration:none;}
 .popup{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;}
 .popup.active{display:flex;}
 .popup-content{background:#1a1a1a;padding:20px;border-radius:15px;width:90%;max-width:350px;text-align:center;}
 .popup-content input,.popup-content select{width:100%;margin:8px 0;padding:10px;background:#222;border:none;color:#fff;border-radius:8px;}
 .popup-content button{margin-top:8px;padding:10px;border:none;border-radius:20px;color:#fff;cursor:pointer;}
-.send{background:#ff0050;}
-.choose{background:#00ccff;}
-.close{background:#555;}
+.send{background:#ff0050;} .choose{background:#00ccff;} .close{background:#555;}
 .empty{text-align:center;opacity:.6;grid-column:1/-1;}
 </style>
 </head>
 <body>
-<header>✨ المعرض الخاص</header>
 
+<!-- شاشة البداية -->
+<div id="loaderScreen">
+  <div class="loader"><span></span><span></span><span></span><span></span></div>
+  <div class="text_box">
+    <b>لمحة</b>
+    <p>معرضك الخاص</p>
+    <p class="loading-dots"><span></span><span></span><span></span></p>
+  </div>
+</div>
+
+<!-- المعرض -->
+<div id="app">
+<header>✨ المعرض الخاص</header>
 <div class="box03D">
 <button class="tab-btn active" onclick="changeSection('محسن الشريف',this)">محسن الشريف</button>
 <button class="tab-btn" onclick="changeSection('سلطان الأحمري',this)">سلطان الأحمري</button>
 <button class="tab-btn" onclick="changeSection('مقعد الرشيدي',this)">مقعد الرشيدي</button>
 </div>
-
 <div class="container" id="mediaContainer"></div>
 
 <div class="viewer" id="viewer">
@@ -52,138 +79,144 @@ header{padding:20px;text-align:center;font-size:26px;font-weight:800;background:
 </div>
 
 <a class="add-btn" onclick="openPopup()">＋</a>
-<a class="delete-section-btn" onclick="askDeleteSection()">🗑</a>
 
 <div class="popup" id="popup">
-<div class="popup-content">
-<h3>إضافة محتوى</h3>
-<select id="sectionSelect">
-<option>محسن الشريف</option>
-<option>سلطان الأحمري</option>
-<option>مقعد الرشيدي</option>
-</select>
-<input type="file" id="fileInput" hidden multiple accept="image/*,video/*">
-<button class="choose" onclick="pickFiles()">📁 اختيار ملفات</button>
-<button class="send" onclick="sendContent()">🚀 إرسال</button>
-<button class="close" onclick="closePopup()">إلغاء</button>
+  <div class="popup-content">
+    <h3>إضافة محتوى</h3>
+    <select id="sectionSelect">
+      <option>محسن الشريف</option>
+      <option>سلطان الأحمري</option>
+      <option>مقعد الرشيدي</option>
+    </select>
+    <input type="file" id="fileInput" hidden multiple accept="image/*,video/*">
+    <button class="choose" onclick="pickFiles()">📁 اختيار ملفات</button>
+    <button class="send" onclick="sendContent()">🚀 إرسال</button>
+    <button class="close" onclick="closePopup()">إلغاء</button>
+  </div>
 </div>
 </div>
 
-<script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzd1vRNoDejE1dP_7rmdv6US-K03hl3DwtJ1BGVoNeVFWeLi01_YLgKUn9wQMjpJk10ww/exec";
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-let selectedFiles=[];
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyASvXiFc2XTdmY3Grq0r5HMMSSdHOpFrPQ",
+  authDomain: "mohsen1166.firebaseapp.com",
+  databaseURL: "https://mohsen1166-default-rtdb.firebaseio.com",
+  projectId: "mohsen1166",
+  storageBucket: "mohsen1166.firebasestorage.app",
+  messagingSenderId: "138646150826",
+  appId: "1:138646150826:web:e043bb7d7cf5419bc23ad3"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* ===== اللودر ===== */
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    document.getElementById("loaderScreen").classList.add("hide");
+    document.getElementById("app").classList.add("show");
+  },3000);
+});
+
+/* ===== كود المعرض ===== */
 let currentSection="محسن الشريف";
-let galleryData = {}; // سيتم تحميله من Drive عبر Web App
+let selectedFiles=[];
 
-async function fetchGalleryData(){
-  try{
-    const res = await fetch(WEB_APP_URL+"?action=get");
-    const json = await res.json();
-    galleryData = json || {};
-    loadMedia();
-  }catch(err){ console.error("خطأ بجلب البيانات:",err); }
-}
-
+// تحميل وعرض البيانات من Realtime Database
 function loadMedia(){
-  const container = document.getElementById("mediaContainer");
+  const container=document.getElementById("mediaContainer");
   container.innerHTML="";
-  const items = galleryData[currentSection]||[];
-  if(!items.length){ container.innerHTML="<div class='empty'>لا يوجد محتوى</div>"; return; }
-  items.forEach((item,i)=>{
-    const card = document.createElement("div"); card.className="card";
-    card.innerHTML=(item.type==="video"?`<video src="${item.url}" muted loop autoplay playsinline></video>`:`<img src="${item.url}">`)
-                    + `<div class="actions">
-                         <button onclick="event.stopPropagation();like(${i})">❤️ ${item.likes||0}</button>
-                         <button onclick="event.stopPropagation();removeItem(${i})">🗑</button>
-                       </div>`;
-    card.onclick=()=>openViewer(item); container.appendChild(card);
+  const sectionRef = ref(db, currentSection);
+  onValue(sectionRef, (snapshot)=>{
+    const data = snapshot.val();
+    container.innerHTML="";
+    if(!data){
+      container.innerHTML="<div class='empty'>لا يوجد محتوى</div>";
+      return;
+    }
+    Object.keys(data).forEach(key=>{
+      const item = data[key];
+      const card=document.createElement("div"); card.className="card";
+      card.innerHTML = item.type==="video"
+        ? `<video src="${item.url}" muted loop autoplay playsinline></video>`
+        : `<img src="${item.url}">`;
+      card.innerHTML+=`<div class="actions">
+        <button onclick="event.stopPropagation();like('${currentSection}','${key}')">❤️ ${item.likes||0}</button>
+        <button onclick="event.stopPropagation();removeItem('${currentSection}','${key}')">🗑</button>
+      </div>`;
+      card.onclick = ()=> openViewer(item);
+      container.appendChild(card);
+    });
   });
 }
 
-function like(i){ 
-  galleryData[currentSection][i].likes=(galleryData[currentSection][i].likes||0)+1;
-  saveToDrive();
-  loadMedia(); 
-}
-function removeItem(i){ 
-  galleryData[currentSection].splice(i,1); 
-  saveToDrive();
-  loadMedia(); 
-}
-function openViewer(item){ 
-  const viewer=document.getElementById("viewer"); 
-  const content=document.getElementById("viewerContent"); 
-  content.innerHTML=(item.type==="video"?`<video src="${item.url}" controls autoplay></video>`:`<img src="${item.url}">`); 
-  viewer.classList.add("active"); 
-}
-function closeViewer(){ document.getElementById("viewer").classList.remove("active"); }
-function changeSection(name,btn){ 
-  currentSection=name; 
-  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); 
-  btn.classList.add("active"); 
-  loadMedia(); 
+// الإعجاب
+function like(section, key){
+  const itemRef = ref(db, section+'/'+key+'/likes');
+  onValue(itemRef, snapshot=>{
+    let currentLikes = snapshot.val()||0;
+    set(itemRef, currentLikes+1);
+  }, {onlyOnce:true});
 }
 
-function openPopup(){ document.getElementById("popup").classList.add("active"); }
-function closePopup(){ document.getElementById("popup").classList.remove("active"); selectedFiles=[]; document.getElementById("fileInput").value=""; }
-function pickFiles(){ document.getElementById("fileInput").click(); }
-document.getElementById("fileInput").onchange=e=>{ selectedFiles=[...e.target.files]; }
+// حذف محتوى
+function removeItem(section, key){
+  const itemRef = ref(db, section+'/'+key);
+  set(itemRef, null);
+}
 
-async function sendFileToDrive(file){
-  return new Promise((resolve,reject)=>{
-    const reader = new FileReader();
-    reader.onload = async (e)=>{
-      const base64 = e.target.result.split(',')[1];
-      const data = {name:file.name,type:file.type,file:base64,section:currentSection};
-      try{
-        const res = await fetch(WEB_APP_URL,{ method:'POST', body:JSON.stringify(data) });
-        const json = await res.json();
-        resolve(json.url);
-      }catch(err){ reject(err); }
-    };
+// فتح وإغلاق المشاهد
+function openViewer(item){
+  const viewer=document.getElementById("viewer");
+  const content=document.getElementById("viewerContent");
+  content.innerHTML = item.type==="video"
+    ? `<video src="${item.url}" controls autoplay></video>`
+    : `<img src="${item.url}">`;
+  viewer.classList.add("active");
+}
+function closeViewer(){document.getElementById("viewer").classList.remove("active");}
+
+// تغيير القسم
+function changeSection(name,btn){
+  currentSection=name;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  loadMedia();
+}
+
+// بوب أب لإضافة محتوى
+function openPopup(){document.getElementById("popup").classList.add("active");}
+function closePopup(){document.getElementById("popup").classList.remove("active"); selectedFiles=[]; document.getElementById("fileInput").value="";}
+function pickFiles(){document.getElementById("fileInput").click();}
+document.getElementById("fileInput").onchange=e=>{selectedFiles=[...e.target.files];}
+
+// إرسال الملفات
+function sendContent(){
+  if(!selectedFiles.length) return alert("اختر ملفات");
+  const sec=document.getElementById("sectionSelect").value;
+  selectedFiles.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const itemRef = push(ref(db, sec));
+      set(itemRef,{
+        type:file.type.startsWith("video")?"video":"image",
+        url:e.target.result,
+        likes:0
+      });
+    }
     reader.readAsDataURL(file);
   });
+  closePopup(); selectedFiles=[];
 }
 
-async function sendContent(){
-  if(!selectedFiles.length) return alert("اختر ملفات");
-  for(const file of selectedFiles){
-    try{
-      const url = await sendFileToDrive(file);
-      if(!galleryData[currentSection]) galleryData[currentSection]=[];
-      galleryData[currentSection].push({type:file.type.startsWith("video")?"video":"image",url,likes:0});
-      saveToDrive();
-    }catch(err){ console.error("خطأ بالرفع:",err); }
-  }
-  selectedFiles=[]; closePopup(); loadMedia();
-}
-
-function askDeleteSection(){
-  const pass=prompt("كلمة مرور حذف قسم "+currentSection);
-  const sectionPasswords={"محسن الشريف":"1111","سلطان الأحمري":"2222","مقعد الرشيدي":"3333"};
-  if(pass===sectionPasswords[currentSection]){
-    if(confirm("سيتم حذف كل محتوى القسم!")){ 
-      galleryData[currentSection]=[]; 
-      saveToDrive(); 
-      loadMedia(); 
-      alert("تم الحذف ✅"); 
-    }
-  }else{ alert("كلمة المرور خاطئة ❌"); }
-}
-
-// هذه الوظيفة ترسل بيانات المعرض بالكامل إلى Web App لتخزينه في Google Sheet أو أي مكان مركزي
-async function saveToDrive(){
-  try{
-    await fetch(WEB_APP_URL, { 
-      method:'POST', 
-      body:JSON.stringify({action:'save',data:galleryData})
-    });
-  }catch(err){ console.error("خطأ بحفظ البيانات:",err); }
-}
-
-// جلب البيانات عند فتح الصفحة
-fetchGalleryData();
+// أول تحميل
+loadMedia();
 </script>
 </body>
 </html>
