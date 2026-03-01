@@ -77,6 +77,80 @@ header{padding:20px;text-align:center;font-size:26px;font-weight:800;background:
 .popup-content button{margin-top:8px;padding:10px;border:none;border-radius:20px;color:#fff;cursor:pointer;}
 .send{background:#ff0050;} .choose{background:#00ccff;} .close{background:#555;}
 .empty{text-align:center;opacity:.6;grid-column:1/-1;}
+/* ===== زر الشرح ===== */
+.help-btn{
+  padding:12px 22px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#ff0050,#ff9900);
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+.help-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(0,0,0,.5);
+}
+
+/* ===== نافذة الشرح ===== */
+.help-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.help-popup.active{
+  display:flex;
+}
+
+.help-box{
+  width:90%;
+  max-width:700px;
+  background:#111;
+  border-radius:18px;
+  overflow:hidden;
+  animation:popupShow .35s ease;
+}
+
+@keyframes popupShow{
+  from{transform:scale(.8);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+/* الهيدر */
+.help-header{
+  background:linear-gradient(135deg,#ff0050,#ff9900);
+  padding:15px;
+  font-size:18px;
+  font-weight:700;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.help-header button{
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* الفيديو */
+.help-content{
+  padding:15px;
+}
+
+.help-content video{
+  width:100%;
+  border-radius:12px;
+}
 </style>
 </head>
 <body>
@@ -93,7 +167,27 @@ header{padding:20px;text-align:center;font-size:26px;font-weight:800;background:
 
 <!-- المعرض -->
 <div id="app">
-<header>✨ المعرض الخاص</header>
+<header>✨ المعرض الخاص  <hr /><button class="help-btn" onclick="openHelp()">📖 شرح استخدام التطبيق</button></header>
+<!-- نافذة شرح التطبيق -->
+<div class="help-popup" id="helpPopup">
+  
+  <div class="help-box">
+    
+    <div class="help-header">
+      <span>شرح توضيحي لاستخدام التطبيق</span>
+      <button onclick="closeHelp()">✕</button>
+    </div>
+    
+    <div class="help-content">
+      <video controls>
+        <source src="video.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو
+      </video>
+    </div>
+    
+  </div>
+  
+</div>
 <div class="box03D">
 <button class="tab-btn active" onclick="changeSection('محسن الشريف',this)">محسن الشريف</button>
 <button class="tab-btn" onclick="changeSection('سلطان الأحمري',this)">سلطان الأحمري</button>
@@ -204,7 +298,13 @@ function closePopup(){
 }
 function pickFiles(){document.getElementById("fileInput").click();}
 document.getElementById("fileInput").onchange=e=>{selectedFiles=[...e.target.files];}
+function openHelp() {
+  document.getElementById("helpPopup").classList.add("active");
+}
 
+function closeHelp() {
+  document.getElementById("helpPopup").classList.remove("active");
+}
 function sendContent(){
   if(!selectedFiles.length) return alert("اختر ملفات");
   const sec=document.getElementById("sectionSelect").value;
