@@ -2,332 +2,126 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المعرض الخاص</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>World Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
-body{background:radial-gradient(circle at top,#1b1b1b,#070707);color:#fff;min-height:100vh;}
-
-/* ================= LOADER ================= */
-#loaderScreen{
-  position:fixed;
-  inset:0;
-  background:#fff;
-  z-index:9999;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:25px;
-  transition:opacity .7s ease,visibility .7s;
-}
-#loaderScreen.hide{opacity:0; visibility:hidden;}
-.loader{
-    width:84px; height:84px; transform:rotate(45deg); position:relative;
-    animation:animate 1.2s infinite ease-in-out;
-}
-.loader span{
-    background:#ff6600; width:40px; height:40px; border-radius:5px;
-    position:absolute; animation:animate_1 1.2s infinite ease-in-out both;
-}
-.loader span:nth-child(1){top:0;left:0;}
-.loader span:nth-child(2){top:0;right:0;background:red;}
-.loader span:nth-child(3){bottom:0;left:0;background:green;}
-.loader span:nth-child(4){bottom:0;right:0;background:purple;}
-@keyframes animate{0%,10%,100%{width:84px;height:84px;}65%{width:150px;height:150px;}}
-@keyframes animate_1{0%,30%{transform:rotate(0);}55%{background:transparent;transform:scale(.5);}100%{transform:rotate(180deg);}}
-
-/* نص التحميل مع النقاط المتحركة */
-.text_box{text-align:center;}
-.text_box b{font-size:28px;color:#111;display:block;}
-.text_box p{font-size:16px;color:#777;margin-top:6px;}
-.loading-dots span{
-  display:inline-block; width:6px; height:6px; margin:0 2px;
-  background:#777; border-radius:50%; animation:dotPulse 1s infinite ease-in-out;
-}
-.loading-dots span:nth-child(1){animation-delay:0s;}
-.loading-dots span:nth-child(2){animation-delay:.2s;}
-.loading-dots span:nth-child(3){animation-delay:.4s;}
-@keyframes dotPulse{0%,80%,100%{transform:scale(0);}40%{transform:scale(1);}}
-
-/* إخفاء الموقع بالبداية */
-#app{opacity:0;transition:1s;} #app.show{opacity:1;}
-
-/* ================= تصميم المعرض ================= */
-header{padding:20px;text-align:center;font-size:26px;font-weight:800;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);}
-.box03D{display:flex;justify-content:center;margin:20px;gap:10px;}
-.tab-btn{padding:10px 20px;border:none;border-radius:30px;background:#1c1c1c;color:#aaa;cursor:pointer;transition:.3s;}
-.tab-btn.active{background:linear-gradient(135deg,#ff0050,#ff9900);color:#fff;}
-.container{padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
-.card{background:#111;border-radius:15px;overflow:hidden;cursor:pointer;transition:.3s;}
-.card:hover{transform:scale(1.03);}
-.card img,.card video{width:100%;height:200px;object-fit:cover;}
-.actions{display:flex;justify-content:space-between;padding:10px;}
-.actions button{border:none;background:#222;color:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;}
-.viewer{position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;z-index:999;}
-.viewer.active{display:flex;}
-.viewer img,.viewer video{max-width:95%;max-height:95%;}
-.close-view{position:absolute;top:20px;right:25px;font-size:35px;cursor:pointer;background:rgba(0,0,0,.5);padding:5px 12px;border-radius:10px;}
-.add-btn{position:fixed;bottom:100px;left:25px;width:65px;height:65px;border-radius:50%;background:linear-gradient(135deg,#ff0050,#ff9900);display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;text-decoration:none;}
-.popup{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;}
-.popup.active{display:flex;}
-.popup-content{background:#1a1a1a;padding:20px;border-radius:15px;width:90%;max-width:350px;text-align:center;}
-.popup-content input,.popup-content select{width:100%;margin:8px 0;padding:10px;background:#222;border:none;color:#fff;border-radius:8px;}
-.popup-content button{margin-top:8px;padding:10px;border:none;border-radius:20px;color:#fff;cursor:pointer;}
-.send{background:#ff0050;} .choose{background:#00ccff;} .close{background:#555;}
-.empty{text-align:center;opacity:.6;grid-column:1/-1;}
-/* ===== زر الشرح ===== */
-.help-btn{
-  padding:12px 22px;
-  border:none;
-  border-radius:30px;
-  background:linear-gradient(135deg,#ff0050,#ff9900);
-  color:#fff;
-  font-size:15px;
-  cursor:pointer;
-  transition:.3s;
-  box-shadow:0 5px 15px rgba(0,0,0,.3);
-}
-.help-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(0,0,0,.5);
-}
-
-/* ===== نافذة الشرح ===== */
-.help-popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-
-.help-popup.active{
-  display:flex;
-}
-
-.help-box{
-  width:90%;
-  max-width:700px;
-  background:#111;
-  border-radius:18px;
-  overflow:hidden;
-  animation:popupShow .35s ease;
-}
-
-@keyframes popupShow{
-  from{transform:scale(.8);opacity:0;}
-  to{transform:scale(1);opacity:1;}
-}
-
-/* الهيدر */
-.help-header{
-  background:linear-gradient(135deg,#ff0050,#ff9900);
-  padding:15px;
-  font-size:18px;
-  font-weight:700;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.help-header button{
-  background:none;
-  border:none;
-  color:#fff;
-  font-size:22px;
-  cursor:pointer;
-}
-
-/* الفيديو */
-.help-content{
-  padding:15px;
-}
-
-.help-content video{
-  width:100%;
-  border-radius:12px;
-}
+body { font-family:'Cairo',sans-serif; background:#070b14; color:white; margin:0; padding:0; }
+nav { padding:15px 20px; background:rgba(0,0,0,.4); backdrop-filter:blur(10px); display:flex; justify-content:space-between; position:fixed; width:100%; top:0; z-index:999; }
+nav a { color:white; margin-left:10px; text-decoration:none; cursor:pointer; opacity:.8; }
+nav a:hover{ color:#00ffd5; }
+.hero{ text-align:center; padding:120px 20px 60px; }
+.hero h1{ font-size:50px; background:linear-gradient(90deg,#00ffd5,#4facfe); -webkit-background-clip:text; color:transparent; }
+.hero p{ opacity:.8; margin-top:15px; line-height:1.8; }
+.btn{ display:inline-block; margin-top:25px; padding:14px 30px; border-radius:40px; background:linear-gradient(90deg,#00ffd5,#4facfe); color:#000; font-weight:bold; text-decoration:none; transition:.3s; }
+.btn:hover{ transform:scale(1.1); box-shadow:0 0 25px #00ffd5aa; }
+.stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:20px; max-width:1000px; margin:160px auto 0; }
+.card{ background:rgba(255,255,255,.05); padding:25px; border-radius:18px; text-align:center; transition:.4s; }
+.card:hover{ transform:translateY(-8px); box-shadow:0 0 35px #00ffd533; }
+.number{ font-size:34px; font-weight:900; color:#00ffd5; margin-top:10px; }
+footer{ background:#05070f; margin-top:80px; padding:40px 20px; text-align:center; border-top:1px solid rgba(255,255,255,.08); }
+footer a{ color:white; margin:0 10px; cursor:pointer; opacity:.7; text-decoration:none; }
+footer a:hover{ color:#00ffd5; }
+.copy{ margin-top:20px; opacity:.6; font-size:14px; }
+/* MODAL */
+.modal{ position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.75); backdrop-filter:blur(10px); display:flex; justify-content:center; align-items:center; opacity:0; pointer-events:none; transition:.4s; z-index:2000; }
+.modal.active{ opacity:1; pointer-events:auto; }
+.modal-box{ background:#0b1224; padding:35px; border-radius:18px; max-width:600px; width:90%; box-shadow:0 0 40px #00ffd544; position:relative; animation:pop .4s; }
+.modal-box h2{ color:#00ffd5; margin-bottom:15px; }
+.modal-box p{ line-height:2; opacity:.85; }
+.contact-form { display:flex; flex-direction:column; gap:15px; margin-top:10px; }
+.contact-form input, .contact-form textarea{ background:#070b14; border:1px solid rgba(255,255,255,.15); border-radius:10px; padding:12px; color:white; font-size:14px; outline:none; transition:.3s; }
+.contact-form input:focus, .contact-form textarea:focus{ border-color:#00ffd5; box-shadow:0 0 10px #00ffd544; }
+.contact-form textarea{ min-height:120px; resize:none; }
+.contact-form button{ background:linear-gradient(90deg,#00ffd5,#4facfe); border:none; padding:12px; border-radius:30px; font-weight:bold; cursor:pointer; transition:.3s; }
+.contact-form button:hover{ transform:scale(1.05); box-shadow:0 0 20px #00ffd5aa; }
+.modal-close{ position:absolute; top:10px; left:12px; background:none; border:none; color:white; font-size:22px; cursor:pointer; }
+.modal-close:hover{ color:#00ffd5; }
+@keyframes pop{ from{transform:scale(.8);opacity:0} to{transform:scale(1)} }
 </style>
 </head>
 <body>
 
-<!-- شاشة البداية -->
-<div id="loaderScreen">
-  <div class="loader"><span></span><span></span><span></span><span></span></div>
-  <div class="text_box">
-    <b>لمحة</b>
-    <p>معرضك الخاص</p>
-    <p class="loading-dots"><span></span><span></span><span></span></p>
-  </div>
+<nav>
+<div>🌍 World Monitor</div>
+<div>
+<a onclick="openModal('privacy')">سياسة الخصوصية</a>
+<a onclick="openModal('terms')">شروط الاستخدام</a>
+<a onclick="openModal('contact')">اتصل بنا</a>
 </div>
+</nav>
 
-<!-- المعرض -->
-<div id="app">
-<header>✨ المعرض الخاص  <hr /><button class="help-btn" onclick="openHelp()">📖 شرح استخدام التطبيق</button></header>
-<!-- نافذة شرح التطبيق -->
-<div class="help-popup" id="helpPopup">
-  
-  <div class="help-box">
-    
-    <div class="help-header">
-      <span>شرح توضيحي لاستخدام التطبيق</span>
-      <button onclick="closeHelp()">✕</button>
-    </div>
-    
-    <div class="help-content">
-      <video controls>
-        <source src="video.mp4" type="video/mp4">
-        متصفحك لا يدعم تشغيل الفيديو
-      </video>
-    </div>
-    
-  </div>
-  
-</div>
-<div class="box03D">
-<button class="tab-btn active" onclick="changeSection('محسن الشريف',this)">محسن الشريف</button>
-<button class="tab-btn" onclick="changeSection('سلطان الأحمري',this)">سلطان الأحمري</button>
-<button class="tab-btn" onclick="changeSection('مقعد الرشيدي',this)">مقعد الرشيدي</button>
-</div>
-<div class="container" id="mediaContainer"></div>
+<section class="hero">
+<h1>مراقبة العالم لحظة بلحظة</h1>
+<p>منصة تعرض الإحصائيات العالمية مباشرة بتجربة بصرية حديثة.</p>
+<a class="btn" href="https://worldmonitor.app" target="_blank">زيارة الموقع الأصلي</a>
+</section>
 
-<div class="viewer" id="viewer">
-<span class="close-view" onclick="closeViewer()">✕</span>
-<div id="viewerContent"></div>
-</div>
+<section class="stats">
+<div class="card"><h3>عدد سكان العالم</h3><div class="number" id="population">0</div></div>
+<div class="card"><h3>المواليد اليوم</h3><div class="number" id="births">0</div></div>
+<div class="card"><h3>الوفيات اليوم</h3><div class="number" id="deaths">0</div></div>
+<div class="card"><h3>استهلاك الطاقة</h3><div class="number" id="energy">0</div></div>
+</section>
 
-<a class="add-btn" onclick="openPopup()">＋</a>
+<footer>
+<a onclick="openModal('privacy')">سياسة الخصوصية</a>
+<a onclick="openModal('terms')">شروط الاستخدام</a>
+<a onclick="openModal('contact')">اتصل بنا</a>
+<div class="copy">© 2026 World Monitor — Developed by <strong>Mohsen</strong></div>
+</footer>
 
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <h3>إضافة محتوى</h3>
-    <select id="sectionSelect">
-      <option>محسن الشريف</option>
-      <option>سلطان الأحمري</option>
-      <option>مقعد الرشيدي</option>
-    </select>
-    <input type="file" id="fileInput" hidden multiple accept="image/*,video/*">
-    <button class="choose" onclick="pickFiles()">📁 اختيار ملفات</button>
-    <button class="send" onclick="sendContent()">🚀 إرسال</button>
-    <button class="close" onclick="closePopup()">إلغاء</button>
-  </div>
+<div id="modal" class="modal">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal()">✕</button>
+<h2 id="modalTitle"></h2>
+<div id="modalContent"></div>
 </div>
 </div>
 
 <script>
-/* ===== اللودر ===== */
-window.addEventListener("load",()=>{
-  setTimeout(()=>{
-    document.getElementById("loaderScreen").classList.add("hide");
-    document.getElementById("app").classList.add("show");
-  },3000);
-});
+/* MODAL */
+function openModal(type){
+const modal=document.getElementById("modal");
+const title=document.getElementById("modalTitle");
+const content=document.getElementById("modalContent");
 
-/* ===== كود المعرض ===== */
-let currentSection="محسن الشريف";
-let galleryData=JSON.parse(localStorage.getItem('folders')||'{}');
-let selectedFiles=[];
-
-/* محتوى تجريبي عند أول تحميل */
-if(!galleryData[currentSection]){
-  galleryData[currentSection] = [
-    {type:'image', url:'https://via.placeholder.com/400x300', likes:0},
-    {type:'video', url:'https://www.w3schools.com/html/mov_bbb.mp4', likes:0}
-  ];
-  localStorage.setItem('folders', JSON.stringify(galleryData));
+if(type==="privacy"){
+title.innerText="سياسة الخصوصية";
+content.innerHTML="<p>نحترم خصوصية المستخدمين ولا نجمع أي بيانات شخصية بدون إذن.</p>";
+} else if(type==="terms"){
+title.innerText="شروط الاستخدام";
+content.innerHTML="<p>جميع المحتويات محمية بحقوق النشر.</p><p>© 2026 World Monitor</p>";
+} else if(type==="contact"){
+title.innerText="اتصل بنا";
+content.innerHTML=`<form class="contact-form">
+<input type="text" placeholder="اسمك" required>
+<input type="email" placeholder="البريد الإلكتروني" required>
+<textarea placeholder="رسالتك" required></textarea>
+<button type="submit">إرسال</button>
+</form><p>🌐 Website: worldmonitor.app</p>`;
 }
 
-function saveData(){localStorage.setItem('folders',JSON.stringify(galleryData));}
-
-function loadMedia(){
-  const container=document.getElementById("mediaContainer");
-  container.innerHTML="";
-  const items=galleryData[currentSection]||[];
-  if(!items.length){container.innerHTML="<div class='empty'>لا يوجد محتوى</div>"; return;}
-  items.forEach((item,i)=>{
-    const card=document.createElement("div"); card.className="card";
-    card.innerHTML=item.type==="video"
-      ?`<video src="${item.url}" muted loop autoplay playsinline></video>`
-      :`<img src="${item.url}">`;
-    card.innerHTML+=`<div class="actions">
-      <button onclick="event.stopPropagation();like(${i})">❤️ ${item.likes||0}</button>
-      <button onclick="event.stopPropagation();removeItem(${i})">🗑</button>
-    </div>`;
-    card.onclick=()=>openViewer(item);
-    container.appendChild(card);
-  });
+modal.classList.add("active");
 }
+function closeModal(){ document.getElementById("modal").classList.remove("active"); }
 
-function like(i){
-  galleryData[currentSection][i].likes=(galleryData[currentSection][i].likes||0)+1;
-  saveData(); loadMedia();
-}
+/* API REAL COUNTERS */
+const API_KEY = "wda_sk_cnzhMoZSsjsGltaRbUJ1WFBfmurIMTfK2z_z-Kw5usv1cl_S8WKSw2LohlfmNVLPdKwcBGod51YZZK-TCyW1Ed4g2zxGqq6phm2JNbyLitA"; // مفتاحك
+async function loadWorldData(){
+try{
+const res = await fetch(`https://worlddataapi.com/api/v1/world/population?api_key=${API_KEY}`);
+const data = await res.json();
 
-function removeItem(i){
-  galleryData[currentSection].splice(i,1);
-  saveData(); loadMedia();
+document.getElementById("population").textContent = Number(data.population||0).toLocaleString();
+document.getElementById("births").textContent = Number(data.births_today||0).toLocaleString();
+document.getElementById("deaths").textContent = Number(data.deaths_today||0).toLocaleString();
+document.getElementById("energy").textContent = Number(data.energy_consumption||0).toLocaleString();
+}catch(err){ console.log("API ERROR:",err);}
 }
-
-function openViewer(item){
-  const viewer=document.getElementById("viewer");
-  const content=document.getElementById("viewerContent");
-  content.innerHTML=item.type==="video"
-    ?`<video src="${item.url}" controls autoplay></video>`
-    :`<img src="${item.url}">`;
-  viewer.classList.add("active");
-}
-
-function closeViewer(){document.getElementById("viewer").classList.remove("active");}
-
-function changeSection(name,btn){
-  currentSection=name;
-  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  loadMedia();
-}
-
-/* ===== بوب أب لإضافة محتوى ===== */
-function openPopup(){document.getElementById("popup").classList.add("active");}
-function closePopup(){
-  document.getElementById("popup").classList.remove("active");
-  selectedFiles=[]; document.getElementById("fileInput").value="";
-}
-function pickFiles(){document.getElementById("fileInput").click();}
-document.getElementById("fileInput").onchange=e=>{selectedFiles=[...e.target.files];}
-function openHelp() {
-  document.getElementById("helpPopup").classList.add("active");
-}
-
-function closeHelp() {
-  document.getElementById("helpPopup").classList.remove("active");
-}
-function sendContent(){
-  if(!selectedFiles.length) return alert("اختر ملفات");
-  const sec=document.getElementById("sectionSelect").value;
-  selectedFiles.forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      if(!galleryData[sec]) galleryData[sec]=[];
-      galleryData[sec].push({
-        type:file.type.startsWith("video")?"video":"image",
-        url:e.target.result,
-        likes:0
-      });
-      saveData();
-      loadMedia();
-    }
-    reader.readAsDataURL(file);
-  });
-  closePopup();
-  selectedFiles=[];
-}
-
-/* ===== تحميل أولي ===== */
-loadMedia();
+loadWorldData();
+setInterval(loadWorldData,60000);
 </script>
+
 </body>
 </html>
