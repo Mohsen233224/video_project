@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إرسال الرسائل التحذيرية</title>
+<style>
+body{font-family:system-ui; background:#f4f4f4; padding:30px;}
+.box{background:#fff; padding:20px; border-radius:14px; max-width:500px; margin:auto; box-shadow:0 10px 30px rgba(0,0,0,.1);}
+textarea,input{width:100%; padding:12px; border-radius:8px; border:1px solid #ddd; margin-bottom:15px; font-size:14px;}
+textarea{height:110px; resize:none;}
+button{width:100%; padding:12px; border:none; border-radius:10px; background:black; color:white; font-size:15px; cursor:pointer;}
+.title{font-weight:bold; margin-bottom:15px; font-size:18px;}
+</style>
+</head>
+<body>
+
+<div class="box">
+  <div class="title">إرسال الرسائل التحذيرية الطارئة</div>
+
+  <!-- محتوى الرسالة بالعربي فقط -->
+  <textarea id="msgAr" placeholder="اكتب محتوى الرسالة التحذيرية بالعربي"></textarea>
+
+  <!-- التوقيت -->
+  <input type="datetime-local" id="time">
+
+  <button onclick="sendAlert()">إرسال الرسالة التحذيرية الطارئة</button>
+</div>
+
+<script>
+function sendAlert(){
+  if(msgAr.value.trim() === "" || !time.value){
+    alert("يرجى كتابة الرسالة وتحديد وقت الظهور");
+    return;
+  }
+  let data = {
+    arabic: msgAr.value,
+    time: new Date(time.value).getTime()
+  };
+  localStorage.setItem("globalAlertData", JSON.stringify(data));
+  localStorage.removeItem("globalAlertShown"); // إعادة تهيئة لعرض التنبيه مرة واحدة
+  alert("تم إرسال الرسالة التحذيرية بنجاح");
+}
+</script>
+
+</body>
+</html>
