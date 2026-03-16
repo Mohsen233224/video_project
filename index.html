@@ -1,127 +1,631 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>World Monitor</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profile</title>
+
 <style>
-body { font-family:'Cairo',sans-serif; background:#070b14; color:white; margin:0; padding:0; }
-nav { padding:15px 20px; background:rgba(0,0,0,.4); backdrop-filter:blur(10px); display:flex; justify-content:space-between; position:fixed; width:100%; top:0; z-index:999; }
-nav a { color:white; margin-left:10px; text-decoration:none; cursor:pointer; opacity:.8; }
-nav a:hover{ color:#00ffd5; }
-.hero{ text-align:center; padding:120px 20px 60px; }
-.hero h1{ font-size:50px; background:linear-gradient(90deg,#00ffd5,#4facfe); -webkit-background-clip:text; color:transparent; }
-.hero p{ opacity:.8; margin-top:15px; line-height:1.8; }
-.btn{ display:inline-block; margin-top:25px; padding:14px 30px; border-radius:40px; background:linear-gradient(90deg,#00ffd5,#4facfe); color:#000; font-weight:bold; text-decoration:none; transition:.3s; }
-.btn:hover{ transform:scale(1.1); box-shadow:0 0 25px #00ffd5aa; }
-.stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:20px; max-width:1000px; margin:160px auto 0; }
-.card{ background:rgba(255,255,255,.05); padding:25px; border-radius:18px; text-align:center; transition:.4s; }
-.card:hover{ transform:translateY(-8px); box-shadow:0 0 35px #00ffd533; }
-.number{ font-size:34px; font-weight:900; color:#00ffd5; margin-top:10px; }
-footer{ background:#05070f; margin-top:80px; padding:40px 20px; text-align:center; border-top:1px solid rgba(255,255,255,.08); }
-footer a{ color:white; margin:0 10px; cursor:pointer; opacity:.7; text-decoration:none; }
-footer a:hover{ color:#00ffd5; }
-.copy{ margin-top:20px; opacity:.6; font-size:14px; }
-/* MODAL */
-.modal{ position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.75); backdrop-filter:blur(10px); display:flex; justify-content:center; align-items:center; opacity:0; pointer-events:none; transition:.4s; z-index:2000; }
-.modal.active{ opacity:1; pointer-events:auto; }
-.modal-box{ background:#0b1224; padding:35px; border-radius:18px; max-width:600px; width:90%; box-shadow:0 0 40px #00ffd544; position:relative; animation:pop .4s; }
-.modal-box h2{ color:#00ffd5; margin-bottom:15px; }
-.modal-box p{ line-height:2; opacity:.85; }
-.contact-form { display:flex; flex-direction:column; gap:15px; margin-top:10px; }
-.contact-form input, .contact-form textarea{ background:#070b14; border:1px solid rgba(255,255,255,.15); border-radius:10px; padding:12px; color:white; font-size:14px; outline:none; transition:.3s; }
-.contact-form input:focus, .contact-form textarea:focus{ border-color:#00ffd5; box-shadow:0 0 10px #00ffd544; }
-.contact-form textarea{ min-height:120px; resize:none; }
-.contact-form button{ background:linear-gradient(90deg,#00ffd5,#4facfe); border:none; padding:12px; border-radius:30px; font-weight:bold; cursor:pointer; transition:.3s; }
-.contact-form button:hover{ transform:scale(1.05); box-shadow:0 0 20px #00ffd5aa; }
-.modal-close{ position:absolute; top:10px; left:12px; background:none; border:none; color:white; font-size:22px; cursor:pointer; }
-.modal-close:hover{ color:#00ffd5; }
-@keyframes pop{ from{transform:scale(.8);opacity:0} to{transform:scale(1)} }
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui;
+}
+
+body{
+background:#fff;
+width:100vw;
+min-height:100vh;
+padding-bottom:12vh;
+overflow-x:hidden;
+}
+
+/* الأيقونات */
+
+svg{
+stroke:#000;
+stroke-linecap:round;
+stroke-linejoin:round;
+}
+
+/* الهيدر */
+
+.header{
+position:sticky;
+top:0;
+background:#fff;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:5vw;
+z-index:10;
+}
+
+.header .left,
+.header .right{
+display:flex;
+gap:5vw;
+}
+
+.header svg{
+width:7vw;
+height:7vw;
+cursor:pointer;
+}
+
+/* صورة الحساب */
+
+.profile{
+text-align:center;
+margin-top:2vh;
+}
+
+.avatar{
+width:28vw;
+height:28vw;
+border-radius:50%;
+object-fit:cover;
+border:0.6vw solid #eee;
+}
+
+/* الاسم */
+
+.name{
+font-size:5vw;
+font-weight:bold;
+margin-top:1vh;
+}
+
+.username{
+color:gray;
+font-size:3.5vw;
+}
+
+/* الاحصائيات */
+
+.stats{
+display:flex;
+justify-content:center;
+gap:10vw;
+margin-top:2vh;
+direction: rtl;
+}
+
+.stats div{
+text-align:center;
+font-weight:bold;
+font-size:4.5vw;
+}
+
+.stats span{
+display:block;
+font-size:3.2vw;
+color:gray;
+}
+
+/* النص */
+
+.bio{
+text-align:center;
+margin-top:2vh;
+font-size:3.6vw;
+}
+
+.link {
+display:block;
+text-align:center;
+margin-top:1vh;
+font-size:3.5vw;
+color:#0077ff;
+word-break:break-all;
+text-decoration:none;
+}
+
+/* الأزرار */
+
+.buttons{
+display:flex;
+justify-content:center;
+gap:4vw;
+margin-top:2vh;
+}
+
+.btn{
+display:flex;
+align-items:center;
+gap:2vw;
+border:0.4vw solid #ddd;
+padding:2vw 4vw;
+border-radius:2vw;
+font-size:3.2vw;
+font-weight: bold;
+background:#fff;
+cursor:pointer;
+}
+
+.btn svg{
+width:5vw;
+height:5vw;
+}
+
+/* التبويبات */
+
+.tabs{
+display:flex;
+justify-content:space-around;
+border-top:1px solid #eee;
+border-bottom:1px solid #eee;
+margin-top:3vh;
+padding:2vh 0;
+direction: rtl;
+}
+
+.tabs svg{
+width:6vw;
+height:6vw;
+}
+
+/* المحتوى */
+
+.private{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:12vh 0;
+color:#666;
+text-align:center;
+font-size:4vw;
+}
+
+.private svg{
+width:14vw;
+height:14vw;
+margin-bottom:2vh;
+}
+
+/* صفحة فحص الحساب */
+
+.accountPage{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#fff;
+z-index:100;
+font-size: 170%;
+display:none;
+flex-direction:column;
+}
+
+.accountHeader{
+display:flex;
+align-items:center;
+gap:4vw;
+padding:5vw;
+border-bottom:1px solid #eee;
+}
+
+.accountHeader svg{
+width:7vw;
+height:7vw;
+cursor:pointer;
+}
+
+.accountContent{
+text-align:center;
+padding:8vw;
+}
+
+.accountContent img{
+width:22vw;
+height:22vw;
+border-radius:50%;
+margin-bottom:3vh;
+}
+
+.accountTitle{
+font-weight:bold;
+font-size:4.5vw;
+margin-bottom:2vh;
+}
+
+.accountDesc{
+font-size:3.5vw;
+color:#555;
+line-height:1.8;
+}
+
 </style>
 </head>
+
 <body>
 
-<nav>
-<div>🌍 World Monitor</div>
+<!-- الصفحة الرئيسية -->
+
+<div id="mainPage">
+
+<div class="header">
+
+<div class="left">
+
+<!-- القائمة -->
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<line x1="3" y1="6" x2="21" y2="6"/>
+<line x1="3" y1="12" x2="21" y2="12"/>
+<line x1="3" y1="18" x2="21" y2="18"/>
+</svg>
+
+<!-- مشاركة -->
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<circle cx="18" cy="5" r="3"/>
+<circle cx="6" cy="12" r="3"/>
+<circle cx="18" cy="19" r="3"/>
+<line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>
+<line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/>
+</svg>
+
+</div>
+
+<div class="right">
+
+<!-- إضافة -->
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+  <circle cx="12" cy="8" r="4" /> <!-- رأس المستخدم -->
+  <path d="M4 20c0-4 8-4 8-4s8 0 8 4" /> <!-- جسم المستخدم -->
+  <line x1="19" y1="4" x2="19" y2="10" /> <!-- الخط الرأسي للعلامة + -->
+  <line x1="16" y1="7" x2="22" y2="7" /> <!-- الخط الأفقي للعلامة + -->
+</svg>
+
+</div>
+</div>
+
+<div class="profile">
+
+<img class="avatar" src="https://a.top4top.io/p_3726ue4g90.jpeg">
+
+<div class="name">M</div>
+
+<div class="username">@dazai.jin0</div>
+
+</div>
+
+<div class="stats">
+
 <div>
-<a onclick="openModal('privacy')">سياسة الخصوصية</a>
-<a onclick="openModal('terms')">شروط الاستخدام</a>
-<a onclick="openModal('contact')">اتصل بنا</a>
+152
+<span>أتابعه</span>
 </div>
-</nav>
 
-<section class="hero">
-<h1>مراقبة العالم لحظة بلحظة</h1>
-<p>منصة تعرض الإحصائيات العالمية مباشرة بتجربة بصرية حديثة.</p>
-<a class="btn" href="https://worldmonitor.app" target="_blank">زيارة الموقع الأصلي</a>
-</section>
-
-<section class="stats">
-<div class="card"><h3>عدد سكان العالم</h3><div class="number" id="population">0</div></div>
-<div class="card"><h3>المواليد اليوم</h3><div class="number" id="births">0</div></div>
-<div class="card"><h3>الوفيات اليوم</h3><div class="number" id="deaths">0</div></div>
-<div class="card"><h3>استهلاك الطاقة</h3><div class="number" id="energy">0</div></div>
-</section>
-
-<footer>
-<a onclick="openModal('privacy')">سياسة الخصوصية</a>
-<a onclick="openModal('terms')">شروط الاستخدام</a>
-<a onclick="openModal('contact')">اتصل بنا</a>
-<div class="copy">© 2026 World Monitor — Developed by <strong>Mohsen</strong></div>
-</footer>
-
-<div id="modal" class="modal">
-<div class="modal-box">
-<button class="modal-close" onclick="closeModal()">✕</button>
-<h2 id="modalTitle"></h2>
-<div id="modalContent"></div>
+<div>
+126
+<span>متابعين</span>
 </div>
+
+<div>
+314
+<span>إعجابات</span>
+</div>
+
+</div>
+
+<div class="bio">
+صدقة جارية عن عادل بندر الجنيدي الشمري 💔🥹
+</div>
+
+<a href="https://ehsan.sa/donationcampaign/details/1704873" class="link">
+https://ehsan.sa/donationcampaign/details/1704873
+</a>
+
+<div class="buttons">
+
+<div class="btn">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+  <rect x="3" y="3" width="18" height="18" rx="3" />
+  <path d="M9 9h6v6H9z" />
+</svg>
+TikTok Studio
+</div>
+
+<div class="btn">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+  <circle cx="12" cy="12" r="9" />
+  <path d="M12 7v10" />
+  <path d="M9 10c0-1.5 6-1.5 6 0s-6 1.5-6 3 6 1.5 6 3" />
+</svg>
+رصيد
+</div>
+
+<div class="btn" onclick="openAccount()">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+  <rect x="3" y="11" width="18" height="11" rx="2" />
+  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  <path d="M9 16l2 2 4-4" />
+</svg>
+فحص الحساب
+</div>
+
+</div>
+
+<div class="tabs">
+
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<rect x="3" y="3" width="7" height="7"/>
+<rect x="14" y="3" width="7" height="7"/>
+<rect x="14" y="14" width="7" height="7"/>
+<rect x="3" y="14" width="7" height="7"/>
+</svg>
+
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<rect x="3" y="11" width="18" height="11"/>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>
+
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<polyline points="17 1 21 5 17 9"/>
+<path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+</svg>
+
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.5-7 10-7 10z"/>
+</svg>
+
+</div>
+
+<div class="private">
+
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<rect x="3" y="11" width="18" height="11" rx="2"/>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+</svg>
+
+<p>المحتوى مخفي نظراً لخصوصية الحساب</p>
+
+</div>
+
+</div>
+
+<!-- صفحة فحص الحساب -->
+
+<div class="accountPage" id="accountPage">
+
+<div class="accountHeader">
+
+<svg onclick="closeAccount()" viewBox="0 0 24 24" fill="none" stroke-width="2">
+<polyline points="15 18 9 12 15 6"/>
+</svg>
+
+<div><h2>حالة الحساب</h2></div>
+
+</div>
+
+<div class="accountContent">
+
+<img src="https://a.top4top.io/p_3726ue4g90.jpeg">
+
+<div class="accountTitle">
+لا توجد مشكلات عالقة بالحساب
+</div>
+
+<div class="accountDesc">
+
+لا يحتوي حسابك ومنشوراتك على أي مشكلات أو انتهاكات معلقة ولكن هذا لا يشمل حالتك على TikTok Shop أو ميزة ربح المبدعين أو الميزات الأخرى.
+
+<br><br>
+
+سنستمر في توسيع نطاق فحوصاتنا لتشمل المزيد من الميزات.
+
+</div>
+
+</div>
+
 </div>
 
 <script>
-/* MODAL */
-function openModal(type){
-const modal=document.getElementById("modal");
-const title=document.getElementById("modalTitle");
-const content=document.getElementById("modalContent");
 
-if(type==="privacy"){
-title.innerText="سياسة الخصوصية";
-content.innerHTML="<p>نحترم خصوصية المستخدمين ولا نجمع أي بيانات شخصية بدون إذن.</p>";
-} else if(type==="terms"){
-title.innerText="شروط الاستخدام";
-content.innerHTML="<p>جميع المحتويات محمية بحقوق النشر.</p><p>© 2026 World Monitor</p>";
-} else if(type==="contact"){
-title.innerText="اتصل بنا";
-content.innerHTML=`<form class="contact-form">
-<input type="text" placeholder="اسمك" required>
-<input type="email" placeholder="البريد الإلكتروني" required>
-<textarea placeholder="رسالتك" required></textarea>
-<button type="submit">إرسال</button>
-</form><p>🌐 Website: worldmonitor.app</p>`;
+function openAccount(){
+document.getElementById("accountPage").style.display="flex";
 }
 
-modal.classList.add("active");
+function closeAccount(){
+document.getElementById("accountPage").style.display="none";
 }
-function closeModal(){ document.getElementById("modal").classList.remove("active"); }
 
-/* API REAL COUNTERS */
-const API_KEY = "wda_sk_cnzhMoZSsjsGltaRbUJ1WFBfmurIMTfK2z_z-Kw5usv1cl_S8WKSw2LohlfmNVLPdKwcBGod51YZZK-TCyW1Ed4g2zxGqq6phm2JNbyLitA"; // مفتاحك
-async function loadWorldData(){
-try{
-const res = await fetch(`https://worlddataapi.com/api/v1/world/population?api_key=${API_KEY}`);
-const data = await res.json();
-
-document.getElementById("population").textContent = Number(data.population||0).toLocaleString();
-document.getElementById("births").textContent = Number(data.births_today||0).toLocaleString();
-document.getElementById("deaths").textContent = Number(data.deaths_today||0).toLocaleString();
-document.getElementById("energy").textContent = Number(data.energy_consumption||0).toLocaleString();
-}catch(err){ console.log("API ERROR:",err);}
-}
-loadWorldData();
-setInterval(loadWorldData,60000);
 </script>
+<!-- نافذة التنبيه -->
 
+<style>
+
+.alertOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.alertBox{
+width:85vw;
+background:#fff;
+border-radius:18px;
+padding:22px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+animation:popup .25s ease;
+}
+
+@keyframes popup{
+from{
+transform:scale(.8);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+.alertHeader{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+font-size:18px;
+font-weight:bold;
+margin-bottom:12px;
+}
+
+.alertHeader svg{
+width:26px;
+height:26px;
+stroke:red;
+}
+
+.alertText{
+font-size:15px;
+margin-bottom:8px;
+}
+
+.alertTextEn{
+font-size:14px;
+color:#555;
+}
+
+.alertBox hr{
+margin:15px 0;
+border:none;
+height:1px;
+background:#ddd;
+}
+
+.alertBtn{
+padding:8px 30px;
+border:none;
+border-radius:10px;
+background:black;
+color:white;
+font-size:15px;
+cursor:pointer;
+}
+
+</style>
+
+
+<div class="alertOverlay" id="alertOverlay">
+
+<div class="alertBox">
+
+<div class="alertHeader">
+
+<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+<path d="M10.29 3.86l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.71-3.14l-8-14a2 2 0 0 0-3.42 0z"/>
+<line x1="12" y1="9" x2="12" y2="13"/>
+<circle cx="12" cy="17" r="1"/>
+</svg>
+
+الرسائل التحذيرية الطارئة
+
+</div>
+
+<div class="alertText">
+تنبيه تجريبي لاختبار النظام. تم إنشاء هذا التنبيه للتأكد من أن نظام الإشعارات يعمل بشكل صحيح داخل التطبيق.
+</div>
+
+<div class="alertTextEn">
+Test alert to verify the system. This message ensures the warning and notification system works properly.
+</div>
+
+<hr>
+
+<button class="alertBtn" onclick="closeAlert()">OK</button>
+
+</div>
+
+</div>
+<!-- نافذة التنبيه -->
+<div class="alertOverlay" id="alertOverlay">
+  <div class="alertBox">
+    <div class="alertHeader">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M10.29 3.86l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.71-3.14l-8-14a2 2 0 0 0-3.42 0z" />
+        <line x1="12" y1="9" x2="12" y2="13" />
+        <circle cx="12" cy="17" r="1" />
+      </svg>
+      الرسائل التحذيرية الطارئة
+    </div>
+    <div class="alertText">
+      تنبيه تجريبي لاختبار النظام. تم إنشاء هذا التنبيه للتأكد من أن نظام الإشعارات يعمل بشكل صحيح داخل التطبيق.
+    </div>
+    <div class="alertTextEn">
+      Test alert to verify the system. This message ensures the warning and notification system works properly.
+    </div>
+    
+    <hr>
+    <button class="alertBtn" id="startAlertBtn">OK</button>
+    
+  </div>
+</div>
+
+</script>
+<!-- ملفات الصوت -->
+<audio id="alert0">
+  <source src="alert.mp3" type="audio/mpeg">
+</audio>
+<audio id="alert1">
+  <source src="alert1.mp3" type="audio/mpeg">
+</audio>
+<div class="copyright">
+  جميع الحقوق محفوظة لدى  © M 2026
+</div>
+
+<style>
+/* إطار مركزي وأنيق */
+.copyright {
+  direction: rtl;
+  position: fixed;                 /* يثبت العنصر في الصفحة */
+  bottom: 2px;                    /* يظهر في أسفل الصفحة */
+  left: 50%;                        /* توسيطه أفقياً */
+  transform: translateX(-50%);      /* لضبط منتصف العنصر تماماً */
+  background-color: #222;           /* لون خلفية داكن */
+  color: #fff;                      /* نص أبيض */
+  padding: 30px 398px;               /* مسافة داخلية */
+  border-radius: 12px;              /* حواف مستديرة */
+  font-size: 14px;
+  font-weight: 500;
+  font-family: system-ui, sans-serif;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* ظل خفيف */
+  z-index: 9999;                    /* فوق جميع العناصر */
+  text-align: center;
+  white-space: nowrap;              /* يمنع التفاف النص */
+}
+</style>
+<script>
+  let alertOverlay = document.getElementById("alertOverlay");
+  let btnStart = document.getElementById("startAlertBtn");
+  let alert0 = document.getElementById("alert0");
+  let alert1 = document.getElementById("alert1");
+  
+  /* تسلسل الأصوات */
+  alert0.addEventListener("ended", () => alert1.play());
+  alert1.addEventListener("ended", () => closeAlert());
+  
+  /* زر التشغيل */
+  btnStart.addEventListener("click", function() {
+    alert0.play();
+  });
+  
+  /* إغلاق التنبيه */
+  function closeAlert() {
+    alertOverlay.style.display = "none";
+  }
+</script>
 </body>
 </html>
