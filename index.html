@@ -243,6 +243,7 @@ line-height:1.8;
 </head>
 
 <body>
+
 <!-- نافذة التنبيه -->
 <div class="alertOverlay" id="overlay">
   <div class="alertBox">
@@ -253,34 +254,30 @@ line-height:1.8;
   </div>
 </div>
 
+<!-- زر لتفعيل الصوت أول مرة -->
+<div id="audioPermission" style="position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:20px;border-radius:12px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.2);">
+  <p>اضغط لتفعيل أصوات التنبيهات 🔊</p>
+  <button id="enableAudio" class="alertBtn">تفعيل الصوت</button>
+</div>
+
 <!-- ملفات الصوت -->
-<audio id="alert">
-  <source src="alert.mp3" type="audio/mpeg">
-</audio>
-<audio id="alert1">
-  <source src="alert1.mp3" type="audio/mpeg">
-</audio>
+<audio id="alert0" src="alert.mp3" type="audio/mpeg"></audio>
+<audio id="alert1" src="alert1.mp3" type="audio/mpeg"></audio>
 
 <style>
 .alertOverlay{
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.35); display:none;
-  align-items:center; justify-content:center; z-index:9999;
+  position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.35);
+  display:none; align-items:center; justify-content:center; z-index:9999;
 }
-.alertBox{
-  width:85vw; background:#fff; border-radius:18px;
-  padding:22px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  font-family:system-ui;
-}
+.alertBox{width:85vw; background:#fff; border-radius:18px; padding:22px; text-align:center;}
 .alertHeader{font-weight:bold;margin-bottom:10px;}
-.alertBtn{padding:8px 30px;border:none;border-radius:10px;background:black;color:white;cursor:pointer;}
+.alertBtn{padding:8px 30px; border:none; border-radius:10px; background:black; color:white; cursor:pointer;}
 </style>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-// إعداد Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyASvXiFc2XTdmY3Grq0r5HMMSSdHOpFrPQ",
   authDomain: "mohsen1166.firebaseapp.com",
@@ -294,32 +291,47 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// العناصر
+// عناصر التنبيه والصوت
 const overlay = document.getElementById("overlay");
 const alertText = document.getElementById("alertText");
-const a0 = document.getElementById("alert");
+const a0 = document.getElementById("alert0");
 const a1 = document.getElementById("alert1");
 
-// إغلاق النافذة
+// زر التفعيل
+const audioPermission = document.getElementById("audioPermission");
+const enableAudio = document.getElementById("enableAudio");
+let audioEnabled = false;
+
+// تفعيل الصوت عند الضغط على الزر
+enableAudio.onclick = () => {
+  audioEnabled = true;
+  a0.play().then(()=>{ a0.pause(); a0.currentTime=0; }).catch(()=>{});
+  a1.play().then(()=>{ a1.pause(); a1.currentTime=0; }).catch(()=>{});
+  audioPermission.style.display = "none";
+};
+
+// إغلاق نافذة التنبيه
 window.closeAlert = function(){
   overlay.style.display = "none";
   a0.pause(); a1.pause();
   a0.currentTime=0; a1.currentTime=0;
-};
+}
 
-// عرض التنبيه مع الصوتين بالترتيب
+// عرض التنبيه
 function showAlert(data, alertId){
+  // كل تنبيه يظهر مرة واحدة لكل جهاز
   if(localStorage.getItem("alertShown_" + alertId)) return;
 
   alertText.innerText = data.arabic;
   overlay.style.display = "flex";
 
-  // تشغيل الصوت الأول ثم الثاني
-  a0.play().catch(()=>{});
-  a0.onended = ()=> a1.play().catch(()=>{});
+  if(audioEnabled){
+    a0.play().catch(()=>{});
+    a0.onended = ()=> a1.play();
+  }
 
-  // بعد انتهاء الصوت الثاني، تغلق النافذة
-  a1.onended = closeAlert;
+  // إغلاق تلقائي بعد 10 ثواني
+  setTimeout(closeAlert, 10000);
 
   localStorage.setItem("alertShown_" + alertId, "true");
 }
@@ -338,7 +350,6 @@ onChildAdded(ref(db,"alerts"), snap => {
   }
 });
 </script>
-
 <div id="mainPage">
 
 <div class="header">
