@@ -67,7 +67,7 @@ width:28vw;
 height:28vw;
 border-radius:50%;
 object-fit:cover;
-border:0.6vw solid #E0E0E0;
+border:0.6vw solid #eee;
 }
 
 /* الاسم */
@@ -244,85 +244,80 @@ line-height:1.8;
 
 <body>
 <!-- نافذة التنبيه -->
-<div class="alertOverlay" id="alertOverlay">
+<div class="alertOverlay" id="overlay">
   <div class="alertBox">
-    <div class="alertHeader">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-        <path d="M10.29 3.86l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.71-3.14l-8-14a2 2 0 0 0-3.42 0z"/>
-        <line x1="12" y1="9" x2="12" y2="13"/>
-        <circle cx="12" cy="17" r="1"/>
-      </svg>
-      الرسائل التحذيرية الطارئة
-    </div>
-
-    <div class="alertText" id="alertArabic">محتوى الرسالة التحذيرية بالعربي</div>
-
-    <hr>
+    <div class="alertHeader">🚨 رسالة تحذيرية</div>
+    <div id="alertText">هنا ستظهر الرسائل التحذيرية</div>
+    <br>
     <button class="alertBtn" onclick="closeAlert()">OK</button>
   </div>
 </div>
 
 <!-- ملفات الصوت -->
-<audio id="alert0"><source src="alert.mp3" type="audio/mpeg"></audio>
+<audio id="alert"><source src="alert.mp3" type="audio/mpeg"></audio>
 <audio id="alert1"><source src="alert1.mp3" type="audio/mpeg"></audio>
 
-<style>
-.alertOverlay{position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; z-index:999; display:none;}
-.alertBox{width:85vw; background:#fff; border-radius:18px; padding:22px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); font-family:system-ui;}
-.alertHeader{display:flex; align-items:center; justify-content:center; gap:10px; font-size:18px; font-weight:bold; margin-bottom:12px;}
-.alertHeader svg{width:26px; height:26px; stroke:red;}
-.alertText{font-size:15px; margin-bottom:8px;}
-.alertBox hr{margin:15px 0; border:none; height:1px; background:#ddd;}
-.alertBtn{padding:8px 30px; border:none; border-radius:10px; background:black; color:white; font-size:15px; cursor:pointer;}
-</style>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-<script>
-let overlay = document.getElementById("alertOverlay");
-let alert0 = document.getElementById("alert");
-let alert1 = document.getElementById("alert1");
+const firebaseConfig = {
+  apiKey: "AIzaSyASvXiFc2XTdmY3Grq0r5HMMSSdHOpFrPQ",
+  authDomain: "mohsen1166.firebaseapp.com",
+  databaseURL: "https://mohsen1166-default-rtdb.firebaseio.com",
+  projectId: "mohsen1166",
+  storageBucket: "mohsen1166.firebasestorage.app",
+  messagingSenderId: "138646150826",
+  appId: "1:138646150826:web:51c0982f029e77a2c23ad3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const overlay = document.getElementById("overlay");
+const alertText = document.getElementById("alertText");
+const a0 = document.getElementById("alert");
+const a1 = document.getElementById("alert1");
 
 function closeAlert(){
   overlay.style.display = "none";
-  alert0.pause(); alert1.pause();
-  alert0.currentTime=0; alert1.currentTime=0;
+  a0.pause(); a1.pause();
+  a0.currentTime = 0; a1.currentTime = 0;
 }
 
-/* اظهار التنبيه مرة واحدة */
-let alertShown = localStorage.getItem("globalAlertShown");
-if(!alertShown){
-  let saved = localStorage.getItem("globalAlertData");
-  if(saved){
-    let data = JSON.parse(saved);
-    let now = new Date().getTime();
-    if(now >= data.time){
-      showAlert(data);
-      localStorage.setItem("globalAlertShown","true");
-    } else {
-      setTimeout(()=>{
-        showAlert(data);
-        localStorage.setItem("globalAlertShown","true");
-      }, data.time - now);
-    }
-  }
-}
-
-function showAlert(data){
-  document.getElementById("alertArabic").innerText = data.arabic;
+// عرض التنبيه بالصوتين متسلسل بعد الوصول للوقت
+function showAlert(message){
+  alertText.innerText = message;
   overlay.style.display = "flex";
 
-  // تشغيل الصوتين متسلسلًا
-  alert0.play().catch(()=>{});
-  alert0.addEventListener("ended", ()=>{ alert1.play().catch(()=>{}); });
-
-  // اختفاء النافذة عند انتهاء الوقت
-  let now = new Date().getTime();
-  let duration = data.time - now;
-  if(duration>0){
-    setTimeout(closeAlert, duration);
-  }
+  a0.play().catch(()=>{});
+  a0.onended = ()=> a1.play();
+  a1.onended = ()=> closeAlert();
 }
+
+// الاستماع للتنبيهات من Firebase
+onChildAdded(ref(db, "alerts"), snap => {
+  const data = snap.val();
+  const message = data.arabic;
+  const alertTime = data.time; // الوقت بالميلي ثانية
+
+  const now = Date.now();
+  const delay = alertTime - now;
+
+  if(delay > 0){
+    setTimeout(()=> showAlert(message), delay);
+  } else {
+    console.log("هذا التنبيه انتهى وقت عرضه، لن يظهر");
+  }
+});
 </script>
-<!-- الصفحة الرئيسية -->
+
+<style>
+.alertOverlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:9999;}
+.alertBox{width:85vw;background:#fff;border-radius:18px;padding:22px;text-align:center;}
+.alertHeader{font-weight:bold;margin-bottom:10px;}
+.alertBtn{padding:8px 30px;border:none;border-radius:10px;background:black;color:white;cursor:pointer;}
+</style>
 
 <div id="mainPage">
 

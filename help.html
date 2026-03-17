@@ -2,45 +2,69 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>إرسال الرسائل التحذيرية</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - إرسال التنبيهات</title>
 <style>
-body{font-family:system-ui; background:#f4f4f4; padding:30px;}
-.box{background:#fff; padding:20px; border-radius:14px; max-width:500px; margin:auto; box-shadow:0 10px 30px rgba(0,0,0,.1);}
-textarea,input{width:100%; padding:12px; border-radius:8px; border:1px solid #ddd; margin-bottom:15px; font-size:14px;}
-textarea{height:110px; resize:none;}
-button{width:100%; padding:12px; border:none; border-radius:10px; background:black; color:white; font-size:15px; cursor:pointer;}
-.title{font-weight:bold; margin-bottom:15px; font-size:18px;}
+body{font-family:system-ui;background:#f4f4f4;padding:30px;}
+.box{background:#fff;padding:20px;border-radius:14px;max-width:500px;margin:auto;box-shadow:0 10px 30px rgba(0,0,0,.1);}
+textarea,input,button{width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;margin-bottom:15px;font-size:14px;}
+button{border:none;background:black;color:white;cursor:pointer;}
+.open_btn{
+  width: 50px;
+  height:35px;
+  border: 1px solid #0015FF;
+  border-right: 20px;
+  background: #000000;
+  color: #FFFFFF;
+}
 </style>
 </head>
 <body>
-<button type="submit" onclick="window.location.href='index.html'">صفحة الحساب الرسمي</button>
+<button class="open_btn" onclick="window.location.href='index.html'">open page profit</button>
 <div class="box">
-  <div class="title">إرسال الرسائل التحذيرية الطارئة</div>
-
-  <!-- محتوى الرسالة بالعربي فقط -->
-  <textarea id="msgAr" placeholder="اكتب محتوى الرسالة التحذيرية بالعربي"></textarea>
-
-  <!-- التوقيت -->
+  <h3>إرسال تنبيه لجميع الأجهزة</h3>
+  
+  <textarea id="msgAr" placeholder="اكتب محتوى الرسالة التحذيرية"></textarea>
   <input type="datetime-local" id="time">
-
-  <button onclick="sendAlert()">إرسال الرسالة التحذيرية الطارئة</button>
+  <input type="number" id="duration" placeholder="مدة عرض التنبيه بالملي ثانية" value="10000">
+  <button onclick="sendAlert()">إرسال التنبيه</button>
 </div>
 
-<script>
-function sendAlert(){
-  if(msgAr.value.trim() === "" || !time.value){
-    alert("يرجى كتابة الرسالة وتحديد وقت الظهور");
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyASvXiFc2XTdmY3Grq0r5HMMSSdHOpFrPQ",
+  authDomain: "mohsen1166.firebaseapp.com",
+  databaseURL: "https://mohsen1166-default-rtdb.firebaseio.com",
+  projectId: "mohsen1166",
+  storageBucket: "mohsen1166.firebasestorage.app",
+  messagingSenderId: "138646150826",
+  appId: "1:138646150826:web:51c0982f029e77a2c23ad3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.sendAlert = function() {
+  const msg = document.getElementById("msgAr").value.trim();
+  const time = document.getElementById("time").value;
+  const duration = parseInt(document.getElementById("duration").value);
+
+  if(!msg || !time || !duration){
+    alert("اكتب الرسالة وحدد الوقت والمدة");
     return;
   }
-  let data = {
-    arabic: msgAr.value,
-    time: new Date(time.value).getTime()
-  };
-  localStorage.setItem("globalAlertData", JSON.stringify(data));
-  localStorage.removeItem("globalAlertShown"); // إعادة تهيئة لعرض التنبيه مرة واحدة
-  alert("تم إرسال الرسالة التحذيرية بنجاح");
-}
+
+  push(ref(db,"alerts"), {
+    arabic: msg,
+    time: new Date(time).getTime(),
+    duration: duration
+  });
+
+  alert("تم إرسال التنبيه بنجاح 🚀");
+};
 </script>
 
 </body>
