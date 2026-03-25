@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تواصل معنا - الكتاب الرقمي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
+<style>
+/* أسلوب عام للصفحة */
+body {
+  font-family:'Cairo',sans-serif;
+  background: linear-gradient(135deg,#f0f2f5,#e0e6f0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+
+/* نافذة التواصل المنبثقة */
+.contact-popup {
+  position:absolute;
+  bottom:35%;
+  left:50%;
+  transform:translateX(-50%) scale(1); /* بدل 0 → 1 ليظهر */
+  width:320px;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:25px;
+  gap:20px;
+  opacity:1; /* بدل 0 → 1 ليصبح ظاهر */
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  z-index:10;
+}
+
+/* عند ظهور النافذة */
+.contact-popup.show {
+  transform:translateX(-50%) scale(1);
+  opacity:1;
+}
+
+/* نص الترحيب */
+.contact-popup p {
+  text-align:center;
+  font-size:15px;
+  color:#333;
+  line-height:1.6;
+  margin:0;
+}
+
+/* أيقونات التطبيقات */
+.social-icons {
+  display:flex;
+  justify-content:center;
+  gap:18px;
+}
+
+/* شكل كل أيقونة */
+.social-icon {
+  width:60px;
+  height:60px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor:pointer;
+}
+
+.social-icon img {
+  width:28px;
+  height:28px;
+}
+
+/* تأثير عند المرور على الأيقونات */
+.social-icon:hover {
+  transform: scale(1.2);
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* ألوان التطبيقات */
+.snapchat { background:#fffc00; }
+.tiktok { background:#FF1FDE; }
+.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+
+/* تدرج خلفية عند مرور الماوس على زر التطبيقات */
+.snapchat:hover { filter: brightness(1.2); }
+.tiktok:hover { filter: brightness(1.2); }
+.instagram:hover { filter: brightness(1.2); }
+
+</style>
+</head>
+<body>
+
+<div class="contact-container">
+
+
+  <!-- نافذة التواصل المنبثقة -->
+  <div class="contact-popup" id="contactPopup">
+    <p>مرحباً بك في موقع بالنيابة عنهم - الكتاب الرقمي، تفضل كيف نقدر نخدمك؟ .</p>
+    <div class="">
+      <h2>تواصل معنا عبر</h2>
+    </div>
+    <div class="social-icons">
+      <!-- استبدل USERNAME بالمعرف الحقيقي -->
+      <a href="https://www.snapchat.com/add/abdilallhbdllh?share_id=KfTMIAmIP1c&locale=ar-EG-u-nu-latn" class="social-icon snapchat" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt="Snapchat">
+      </a>
+      <a href="https://www.tiktok.com/@dazai.jin0?_r=1&_t=ZS-94zRjbc21Ao" class="social-icon tiktok" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok">
+      </a>
+      <a href="https://www.instagram.com/abdu.llah6539?igsh=MjRwMGl1eTZiMDI3" class="social-icon instagram" target="_blank">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+      </a>
+    </div>
+  </div>
+</div>
+<b style="width:250px; height: 25px; text-align: center ; background: dimgray; color: #fff; border-radius: 15px; font-size: 13px; margin-top: 150%; box-shadow: gray 5px 5px 50px;">جميع الحقوق محفوظة لدى محسن © 2026</b>
+<script>
+// التعامل مع ظهور نافذة التواصل
+const contactBtn = document.getElementById('contactBtn');
+const contactPopup = document.getElementById('contactPopup');
+
+contactBtn.addEventListener('click', ()=>{
+  contactPopup.classList.toggle('show');
+});
+</script>
+
+</body>
+</html>
