@@ -3,361 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بالنيابة عنهم - الكتاب الرقمي</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
+<title>جولة الجنوبي الفخمة</title>
+
 <style>
-* {margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif;}
-body {background: #f4f6f8; color:#222; display:flex; flex-direction:column; align-items:center; padding:20px;}
-h2 {text-align:center; margin-bottom:25px; color:#FF0000; border: 1px solid #7C82C6; width: 303px; border-radius: 15px;}
-.container {max-width:900px; width:100%; position:relative;}
-.card {background:#fff; border-radius:15px; padding:25px; margin-bottom:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s;}
-.card:hover {transform: translateY(-5px); box-shadow:0 12px 28px rgba(0,0,0,0.15);}
-.card h2 {color:#0077cc; margin-bottom:15px;}
-p {line-height:1.7; margin-bottom:12px;}
-.navigation {display:flex; justify-content:space-between; margin:20px 0;}
-.nav-btn {padding:12px 25px; border:none; background:linear-gradient(135deg,#4facfe,#00f2fe); color:#fff; border-radius:50px; cursor:pointer; font-weight:bold; transition:background 0.3s;}
-.nav-btn:hover {background:linear-gradient(135deg,#00f2fe,#4facfe);}
-.progress-container {width:100%; background:#ddd; border-radius:10px; margin-bottom:20px;}
-.progress-bar {width:0; height:10px; background:linear-gradient(135deg,#4facfe,#00f2fe); border-radius:10px; transition:width 0.3s;}
-.toc {
-  background:#fff;   
-  padding:20px;   
-  border-radius:12px;   
-  box-shadow:0 6px 20px rgba(0,0,0,0.1);   
-  margin-bottom:30px;  
-  max-width:400px;   
-  max-height:143px;  
-  overflow-y:auto;   
+* {
+  box-sizing: border-box;
 }
-.toc h2 {color:#0077cc; margin-bottom:15px;}
-.toc ul {list-style:none; max-height:300px; overflow-y:auto;}
-.toc li {padding:8px 0; cursor:pointer; color:#333; transition:color 0.3s;}
-.toc li:hover {color:#0077cc;}
 
-/* زر المشاركة */
-.share-container {
-  position:absolute;
-  bottom:-80px;
-  left:80%;
-}
-.share-btn {
-  background: linear-gradient(135deg, #ff69b4, #ff85c1);
-  color: #FFFFFF;
-  font-weight: bold;
-  border: none;
-  padding:16px;
-  border-radius:50%;
-  cursor:pointer;
-  box-shadow:0 6px 20px rgba(0,0,0,0.2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition: transform 0.3s;
-}
-.share-btn:hover {transform: scale(1.1);}
-
-/* نافذة المشاركة */
-.share-popup {
-  position:absolute;
-  bottom:70px;
-  left:-130%;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:#ffb6c1;
-  display:none;
-  align-items:center;
-  justify-content:center;
+body, html {
+  margin:0;
   padding:0;
+  height:100%;
+  font-family:'Arial Black', Arial, sans-serif;
 }
 
-/* الأزرار الدائرية مرتبة على شكل حلقة */
-.social-icon {
-  width:30px;
-  height:30px;
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform-origin:center -80px;
-  border-radius:50%;
-  transition: transform 0.20s ;
+/* الخلفية */
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(20,0,40,0.9)), url('root.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+  overflow:hidden;
 }
-.social-icon img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
+
+/* كرت الجولة */
+.card {
+  position:relative;
+  z-index:2;
+  width:90%;
+  max-width:420px;
+  padding:30px;
+  border-radius:25px;
+  text-align:center;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(15px);
+  box-shadow:0 0 40px #ff00aa, 0 0 80px #ff00aa inset;
+  color:#fff;
+  animation: glow 2s infinite alternate;
 }
-.social-icon:hover {transform: scale(1.2);}
+
+/* حركة خفيفة للكرت */
+@keyframes glow {
+  0% { box-shadow:0 0 40px #ff00aa, 0 0 80px #ff00aa inset; }
+  100% { box-shadow:0 0 60px #ff2fd3, 0 0 100px #ff2fd3 inset; }
+}
+
+/* الاسم */
+.name {
+  font-size:7vw;
+  font-weight:bold;
+  color: #ff2fd3;
+  margin-bottom:15px;
+  text-shadow: 0 0 10px #ff2fd3, 0 0 20px #ff00aa;
+}
+
+/* المؤقت */
+.timer {
+  font-size:9vw;
+  margin:20px 0;
+  color:#00ffe1;
+  text-shadow: 0 0 10px #00ffe1, 0 0 20px #00fff0;
+  animation: timerGlow 2s infinite alternate;
+}
+
+@keyframes timerGlow {
+  0% { color:#00ffe1; text-shadow:0 0 10px #00ffe1,0 0 20px #00fff0; }
+  100% { color:#00fff0; text-shadow:0 0 20px #00fff0,0 0 30px #00ffff; }
+}
+
+/* الجوالات */
+.points {
+  font-size:7vw;
+  color:#00ffcc;
+  margin-bottom:15px;
+  transition:0.2s;
+  text-shadow:0 0 10px #00ffcc,0 0 20px #00ffaa;
+}
+
+.flash {
+  transform:scale(1.3);
+  color:#fff;
+  text-shadow:0 0 15px #fff,0 0 30px #00ffcc;
+}
+
+/* زر */
+button {
+  padding:14px 25px;
+  border:none;
+  border-radius:15px;
+  background: linear-gradient(45deg,#ff00aa,#ff2fd3);
+  color:#fff;
+  font-size:5vw;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 0 15px #ff00aa,0 0 30px #ff2fd3 inset;
+}
+
+button:hover {
+  transform:scale(1.1);
+  box-shadow:0 0 25px #ff00aa,0 0 50px #ff2fd3 inset;
+}
+
+/* Media Queries للآيباد والجوال */
+@media (min-width:768px) {
+  .name { font-size:32px; }
+  .timer { font-size:40px; }
+  .points { font-size:28px; }
+  button { font-size:18px; padding:12px 30px; }
+}
+
+@media (min-width:1200px) {
+  .name { font-size:40px; }
+  .timer { font-size:50px; }
+  .points { font-size:32px; }
+  button { font-size:20px; padding:15px 35px; }
+}
 </style>
 </head>
+
 <body>
 
-<h2>بالنيابة عنهم - الكتاب الرقمي</h2>
+<div class="card">
+  <div class="name">🔥 الجنوبي 🔥</div>
 
-<div class="container">
+  <div class="timer" id="timer">00:00</div>
 
-  <!-- شريط التقدم -->
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
+  <div class="points">📱 <span id="points">0</span></div>
 
-  <!-- الفهرس التفاعلي -->
-  <div class="toc" id="toc">
-    <h2>الفهرس التفاعلي</h2>
-    <ul id="tocList"></ul>
-  </div>
-
-  <!-- بطاقة الصفحة -->
-  <div class="card" id="pageContent">
-    <h2>محتوى الصفحة</h2>
-    <p>يتم عرض النصوص هنا...</p>
-  </div>
-
-  <!-- أزرار التنقل -->
-  <div class="navigation">
-    <button class="nav-btn" onclick="prevPage()">السابق</button>
-    <button class="nav-btn" onclick="nextPage()">التالي</button>
-  </div>
-  <br />
-<!-- زر تواصل معنا مستقل -->
-<div class="contact-wrapper">
-  <button onclick="window.location.href='Form.html';" class="contact-btn-unique">
-    <img src="csg.png" width="24" height="24" alt="Chat Icon">
-    تواصل معنا للاستفسار
-  </button>
+  <button onclick="toggle()">تشغيل / إيقاف</button>
 </div>
 
-<style>
-/* التغليف الخاص بالزر */
-.contact-wrapper {
-  display: inline-block; /* حتى لا يؤثر على باقي الصفحة */
-}
-
-/* الزر نفسه مع أسماء فريدة لتجنب التعارض */
-.contact-btn-unique {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  background: linear-gradient(135deg,#ff7eb9,#ff65a3);
-  color: #fff;
-  border: none;
-  padding: 10px 12px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.contact-btn-unique img {
-  width: 35px;
-  height: 35px;
-}
-
-.contact-btn-unique:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-}
-</style>
-  
-  <!-- زر المشاركة -->
-  <div class="share-container">
-    <button class="share-btn" id="shareBtn">مشاركة</button>
-   
-    <div class="share-popup" id="sharePopup">
-      <p style="font-weight:bold; font-size:12px; margin-left: 5%;">مشاركة معا اصدقائي</p>
-      <a href="#" class="social-icon whatsapp" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"></a>
-      <a href="#" class="social-icon facebook" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"></a>
-      <a href="#" class="social-icon twitter" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg"></a>
-      <a href="#" class="social-icon telegram" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"></a>
-      <a href="#" class="social-icon linkedin" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"></a>
-      <a href="#" class="social-icon email" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"></a>
-    </div>
-  </div>
-
-</div>
-<b style="width:250px; height: 25px; text-align: center ; background: dimgray; color: #fff; border-radius: 15px; font-size: 13px; margin-top: 40%;">جميع الحقوق محفوظة لدى محسن © 2026</b>
 <script>
-// محتوى الصفحات
-const totalPages = 100;
-const pages = [
-  // الصفحات 1-50
-  { title: "الصفحة 1", text: "يبدأ العالم بصمت، وصوت الكلمات يتشكل في داخلي..." },
-  { title: "الصفحة 2", text: "الكتابة ليست مجرد حروف على الورق، بل نبض حياة..." },
-  { title: "الصفحة 3", text: "أتذكر أول مرة شعرت بأن كلماتي قد تلمس شخصًا آخر..." },
-  { title: "الصفحة 4", text: "في المدينة، بين الوجوه العابرة، هناك من لا يسمع صوته..." },
-  { title: "الصفحة 5", text: "الحنين إلى الماضي، الألم على ما فقدنا، والأمل في القادم..." },
-  { title: "الصفحة 6", text: "الكتابة شعور، شعور بالمسؤولية..." },
-  { title: "الصفحة 7", text: "حين تتقاطع الكلمات مع الواقع، تتحول من مجرد نصوص إلى قصص حياة..." },
-  { title: "الصفحة 8", text: "الصمت أحيانًا أبلغ من الكلام، ولكن نحن الذين نحمل صوت الصامتين..." },
-  { title: "الصفحة 9", text: "اللغة هي أداة الفن والهوية..." },
-  { title: "الصفحة 10", text: "وأخيرًا، ندرك أن كل نص، مهما صغر، هو نافذة على عالم أكبر..." },
-  { title: "الصفحة 11", text: "المدينة تغمرنا بأصواتها، لكن هناك من يعيش في الزوايا الصامتة..." },
-  { title: "الصفحة 12", text: "أحيانًا نتوقف عند جملة واحدة، ليصبح جسرًا بين القلوب..." },
-  { title: "الصفحة 13", text: "كل نص قصير يحوي عمقًا، وكل قصة صغيرة تمثل جزءًا من حياة الآخرين..." },
-  { title: "الصفحة 14", text: "أكتب عن من لا يكتبون، عن الصامتين الذين يعيشون على هامش الحياة..." },
-  { title: "الصفحة 15", text: "الأمل يظهر أحيانًا في أبسط الكلمات..." },
-  { title: "الصفحة 16", text: "الكتابة هي رحلة البحث عن الإنسانية المشتركة..." },
-  { title: "الصفحة 17", text: "كل فقرة نصية هي محاولة لإعادة ترتيب العالم الداخلي للآخرين..." },
-  { title: "الصفحة 18", text: "حين نقرأ نصوصًا نيابة عن الآخرين، نكتشف كم أن الصمت يحمل كلمات..." },
-  { title: "الصفحة 19", text: "الكتابة تعطي الحياة أبعادًا جديدة..." },
-  { title: "الصفحة 20", text: "وهكذا، تكتمل دائرة الكتابة: من الكاتب إلى القارئ..." },
-  { title: "الصفحة 21", text: "هناك قوة خفية في الكلمات تجعل من البسيط عميقًا..." },
-  { title: "الصفحة 22", text: "النية في الكتابة نيابة عن الآخرين تصنع الفرق..." },
-  { title: "الصفحة 23", text: "الأدب لا ينتهي عند حدود الورق..." },
-  { title: "الصفحة 24", text: "حين نصغي لصمت الآخرين، نكتشف قصصًا لم تُحكى..." },
-  { title: "الصفحة 25", text: "الحنين إلى الماضي يخلق نصوصًا مفعمة بالمشاعر..." },
-  { title: "الصفحة 26", text: "الكتابة شعور حيّ، تفاعل دائم بين النص والقارئ..." },
-  { title: "الصفحة 27", text: "نصوص صغيرة تحوي تجارب كبيرة..." },
-  { title: "الصفحة 28", text: "الأدب وسيلة للحياة، لكل نص قدرة على تحريك المشاعر..." },
-  { title: "الصفحة 29", text: "كل تجربة إنسانية تتحول إلى نص، وكل نص يحوي جزءًا من قصة الآخرين..." },
-  { title: "الصفحة 30", text: "هنا ندرك أن الكتابة ليست مجرد كلمات، بل مسؤولية ومهمة..." },
-  { title: "الصفحة 31", text: "الليل يغمر المدينة بصمت، ولكن كل همس يحمل قصة..." },
-  { title: "الصفحة 32", text: "الكتابة ليست مجرد نقل كلمات، بل نقل نبض الحياة..." },
-  { title: "الصفحة 33", text: "حين نكتب نيابة عن الآخرين، نصبح مرآة للمجتمع..." },
-  { title: "الصفحة 34", text: "كل فقرة هي محاولة لفهم الحياة من منظور الآخرين..." },
-  { title: "الصفحة 35", text: "الشعر والنثر وسيلتنا، بلغة تحمل الصدق والعمق..." },
-  { title: "الصفحة 36", text: "الكاتب يصبح جسراً بين صمت الآخرين وصوت العالم..." },
-  { title: "الصفحة 37", text: "كل نص قصير، مهما بدا بسيطًا، يحمل أبعادًا كبيرة..." },
-  { title: "الصفحة 38", text: "الكتابة النيابة عن الآخرين تعني التزامًا أخلاقيًا..." },
-  { title: "الصفحة 39", text: "اللغة تصبح أداة لصنع الجمال، وصوتًا يروي ما لم يُروى..." },
-  { title: "الصفحة 40", text: "نحن لا نكتب لأنفسنا فقط، بل للآخرين..." },
-  { title: "الصفحة 41", text: "كل تجربة صامتة تتحول إلى نص، وكل نص يصبح نافذة لرؤية العالم..." },
-  { title: "الصفحة 42", text: "الأدب هنا ليس ترفًا، بل واجب إنساني..." },
-  { title: "الصفحة 43", text: "الكتابة تحول المشاعر إلى شكل ملموس..." },
-  { title: "الصفحة 44", text: "كل صفحة نكتبها نيابة عن الآخرين هي نافذة على الحياة..." },
-  { title: "الصفحة 45", text: "الوعي بمسؤولية الكاتب يزيد من عمق النصوص..." },
-  { title: "الصفحة 46", text: "الكتابة تجعلنا نشعر بما لا نشعر به عادة..." },
-  { title: "الصفحة 47", text: "اللغة هنا أداة للشفاء، للتواصل، ولإعادة ترتيب الأفكار..." },
-  { title: "الصفحة 48", text: "كل نص قصير قد يحمل أملًا، ويعيد ترتيب ألم..." },
-  { title: "الصفحة 49", text: "نحن نكتب نيابة عن الآخرين، لنمنحهم مساحة في عالم الكلمات..." },
-  { title: "الصفحة 50", text: "وهكذا، يصبح كل نص صفحة، وكل صفحة جزءًا من رحلة أدبية..." },
-  // الصفحات 51-100
-  { title: "الصفحة 51", text: "المدينة صباحًا تبدو مختلفة، لكن هناك من يعيش في الزوايا الصامتة..." },
-  { title: "الصفحة 52", text: "الكتابة النيابة عن الآخرين تستدعي التأمل والصبر..." },
-  { title: "الصفحة 53", text: "كل نص قصير قد يغير منظور القارئ عن الواقع..." },
-  { title: "الصفحة 54", text: "الألم المشترك يصبح نصًا، والفرح المشترك يصبح كلمات..." },
-  { title: "الصفحة 55", text: "حين نكتب، نحن نحمل عبء المشاعر والأفكار..." },
-  { title: "الصفحة 56", text: "كل صفحة نصوصها دقيقة، تعكس صمتًا وحركة في آن واحد..." },
-  { title: "الصفحة 57", text: "الكتابة تجعلنا نتقاطع مع حياة الآخرين بعمق..." },
-  { title: "الصفحة 58", text: "الأدب يصبح جسراً بين القلوب، لغة صامتة لكنها قوية..." },
-  { title: "الصفحة 59", text: "كل فقرة تعكس تجربة إنسانية، تضيء دروب القارئ..." },
-  { title: "الصفحة 60", text: "النيابة عن الآخرين مسؤولية عظيمة، كلماتنا تمثلهم..." },
-  { title: "الصفحة 61", text: "الليل والصمت يخلقان مساحة للكتابة..." },
-  { title: "الصفحة 62", text: "اللغة ليست مجرد كلمات، بل جسور للتواصل..." },
-  { title: "الصفحة 63", text: "الأمل والحزن والفقدان تتحول إلى نصوص حيّة..." },
-  { title: "الصفحة 64", text: "كل نص قصير يحمل رسالة، قد تكون الأهم لمن يقرأ..." },
-  { title: "الصفحة 65", text: "الكتابة هي فن الاستماع للآخرين، وتجسيد ما يشعرون به..." },
-  { title: "الصفحة 66", text: "كل كلمة محسوبة بعناية لتوصل الصوت الصامت..." },
-  { title: "الصفحة 67", text: "الفن الأدبي أداة لفهم الواقع، وإعادة ترتيبه..." },
-  { title: "الصفحة 68", text: "الكاتب هو صوت من لا صوت له، حاملاً مشاعر الآخرين..." },
-  { title: "الصفحة 69", text: "كل صفحة تجربة فريدة، تجمع بين النص والإنسانية..." },
-  { title: "الصفحة 70", text: "الكتابة النيابة عن الآخرين تجعل النصوص حية ومؤثرة..." },
-  { title: "الصفحة 71", text: "كل نص يحمل لونًا من الحياة، يعكس تفاصيل دقيقة..." },
-  { title: "الصفحة 72", text: "الأدب يعيد ترتيب العالم الداخلي للآخرين..." },
-  { title: "الصفحة 73", text: "الكتابة تجعلنا نتقاطع مع صمتهم، وننقل أصواتهم..." },
-  { title: "الصفحة 74", text: "كل كلمة هنا مسؤولة، كل فكرة لها وزن ومعنى..." },
-  { title: "الصفحة 75", text: "الكتاب ليس مجرد كلمات، بل رحلة عبر المشاعر..." },
-  { title: "الصفحة 76", text: "اللغة هنا أداة لفهم العالم ومشاركة التجارب..." },
-  { title: "الصفحة 77", text: "كل صفحة تكشف عن تفاصيل الحياة اليومية..." },
-  { title: "الصفحة 78", text: "الكتابة تجعلنا نرى ما لا يراه الآخرون..." },
-  { title: "الصفحة 79", text: "كل فقرة هي محاولة للوصول إلى جوهر الإنسانية..." },
-  { title: "الصفحة 80", text: "الأمل والحزن والفرح كلها تتحول إلى نصوص حيّة..." },
-  { title: "الصفحة 81", text: "الكتابة النيابة عن الآخرين تمنح الحياة بعدًا جديدًا..." },
-  { title: "الصفحة 82", text: "كل نص قصير يعكس تجربة مشتركة بين الكاتب والقارئ..." },
-  { title: "الصفحة 83", text: "الأدب هنا وسيلة للتواصل، لفهم المشاعر وتبادلها..." },
-  { title: "الصفحة 84", text: "الكاتب يحمل مسؤولية الصوت الصامت، ويمنحه الحياة على الورق..." },
-  { title: "الصفحة 85", text: "كل صفحة تحمل تجربة فريدة من نوعها..." },
-  { title: "الصفحة 86", text: "الكتابة تجعلنا نشارك الآخرين مشاعرهم الداخلية..." },
-  { title: "الصفحة 87", text: "كل فقرة تحمل رسالة، وكل رسالة لها صدى..." },
-  { title: "الصفحة 88", text: "اللغة أداة لفهم الواقع، وإيصال صوت الصامتين..." },
-  { title: "الصفحة 89", text: "الكتابة تجعل القارئ يعيش التجربة كاملة..." },
-  { title: "الصفحة 90", text: "كل نص قصير قد يترك أثرًا دائمًا في القارئ..." },
-  { title: "الصفحة 91", text: "الكاتب هو صوت من لا صوت له، يحمل رسالتهم..." },
-  { title: "الصفحة 92", text: "كل صفحة نصوصها دقيقة، تنقل مشاعر الحياة اليومية..." },
-  { title: "الصفحة 93", text: "الأدب هنا ليس ترفًا، بل مسؤولية وأمانة..." },
-  { title: "الصفحة 94", text: "الكتابة تجعلنا نتقاطع مع تجارب الآخرين بعمق..." },
-  { title: "الصفحة 95", text: "كل نص قصير يحمل بعدًا إنسانيًا مهمًا..." },
-  { title: "الصفحة 96", text: "اللغة وسيلة للفهم، للتعبير، ولإعادة ترتيب المشاعر..." },
-  { title: "الصفحة 97", text: "الكاتب نيابة عن الآخرين يخلق جسورًا بين القلوب..." },
-  { title: "الصفحة 98", text: "كل صفحة تجربة أدبية، تحمل رسائل متعددة..." },
-  { title: "الصفحة 99", text: "الكتابة تجعلنا نشعر بما لا نشعر به عادة..." },
-  { title: "الصفحة 100", text: "وهكذا، الصفحات الأولى مزيج من الصمت والكلمة، من المشاعر والحياة..." }
-];
+let seconds = 0;
+let timer;
+let running = false;
+let points = 0;
+let fake;
 
-let currentPage = 0;
-const pageContent = document.getElementById('pageContent');
-const progressBar = document.getElementById('progressBar');
-const tocList = document.getElementById('tocList');
-
-// توليد الفهرس ديناميكياً
-for(let i=0;i<totalPages;i++){
-  const li = document.createElement('li');
-  li.textContent = `الصفحة ${i+1}`;
-  li.onclick = ()=>{currentPage=i; showPage(currentPage);}
-  tocList.appendChild(li);
+// تحديث الوقت
+function updateTimer(){
+  let m = Math.floor(seconds/60);
+  let s = seconds % 60;
+  document.getElementById("timer").innerText =
+    (m<10?"0"+m:m)+":"+(s<10?"0"+s:s);
 }
 
-function showPage(index){
-  pageContent.innerHTML = `<h2>${pages[index].title}</h2><p>${pages[index].text.replace(/\n/g,'<br>')}</p>`;
-  progressBar.style.width = `${((index+1)/totalPages)*100}%`;
+// تشغيل الجولة
+function start(){
+  timer = setInterval(()=>{
+    seconds++;
+    updateTimer();
+  },1000);
+
+  fake = setInterval(()=>{
+    let random = Math.floor(Math.random()*6)+1;
+    if(Math.random() > 0.8) random += Math.floor(Math.random()*25);
+    points += random;
+
+    let el = document.getElementById("points");
+    el.innerText = points;
+
+    el.classList.add("flash");
+    setTimeout(()=>el.classList.remove("flash"),200);
+  },700);
 }
 
-// أزرار التنقل
-function nextPage(){if(currentPage<totalPages-1) currentPage++; showPage(currentPage);}
-function prevPage(){if(currentPage>0) currentPage--; showPage(currentPage);}
+// إيقاف الجولة
+function stop(){
+  clearInterval(timer);
+  clearInterval(fake);
+}
 
-// تحميل الصفحة الأولى عند فتح الموقع
-showPage(currentPage);
-
-// عرض وإخفاء نافذة المشاركة مع ترتيب الأزرار على شكل حلقة
-const shareBtn = document.getElementById('shareBtn');
-const sharePopup = document.getElementById('sharePopup');
-
-shareBtn.addEventListener('click', () => {
-  if(sharePopup.style.display==='flex'){
-    sharePopup.style.display='none';
+// زر التشغيل/الإيقاف
+function toggle(){
+  if(!running){
+    start();
+    running = true;
   } else {
-    sharePopup.style.display='flex';
-    arrangeCircle();
+    stop();
+    running = false;
   }
-});
-
-// ترتيب الأيقونات في حلقة
-function arrangeCircle(){
-  const icons = sharePopup.querySelectorAll('.social-icon');
-  const radius = 80;
-  const centerX = 100;
-  const centerY = 100;
-  const total = icons.length;
-
-  const pageUrl = encodeURIComponent(window.location.href);
-  const pageTitle = encodeURIComponent("بالنيابة عنهم - الكتاب الرقمي");
-  const shareText = encodeURIComponent(`شاهد هذا الكتاب الرقمي: ${decodeURIComponent(pageTitle)}`);
-
-  icons.forEach((icon,index)=>{
-    const angle = (index/total)*2*Math.PI;
-    const x = centerX + radius*Math.cos(angle) - 20;
-    const y = centerY + radius*Math.sin(angle) - 20;
-    icon.style.left = `${x}px`;
-    icon.style.top = `${y}px`;
-
-    // تعيين روابط المشاركة
-    if(icon.classList.contains('whatsapp')){
-      icon.href = `https://api.whatsapp.com/send?text=${shareText}%20${pageUrl}`;
-    } else if(icon.classList.contains('facebook')){
-      icon.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}`;
-    } else if(icon.classList.contains('twitter')){
-      icon.href = `https://twitter.com/intent/tweet?text=${shareText}&url=${pageUrl}`;
-    } else if(icon.classList.contains('telegram')){
-      icon.href = `https://t.me/share/url?url=${pageUrl}&text=${shareText}`;
-    } else if(icon.classList.contains('linkedin')){
-      icon.href = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
-    } else if(icon.classList.contains('email')){
-      icon.href = `mailto:?subject=${encodeURIComponent("مشاركة كتاب رقمي")}&body=${shareText}%20${pageUrl}`;
-    }
-  });
 }
 </script>
 
