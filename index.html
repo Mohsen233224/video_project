@@ -13,41 +13,17 @@ body{
   display:flex;
   justify-content:center;
   padding:0px;
-  min-height: 100vh;
-}
+  min-height: 65vh;
 
+  zoom: 1.5; /* 🔥 يكبر كل الصفحة */
+}
+/* الحاوية مكبرة */
 .container{
-  width:90%;
-  max-width:900px;  /* حجم مناسب للشاشات الكبيرة */
+  width:95%;
+  max-width:700px;
   margin:auto;
   text-align:center;
 }
-
-/* شريط الحقوق */
-.MT {
-  width: 90%;
-  max-width:900px;
-  height: 35px;
-  position: fixed;
-  bottom: 3px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  border: 1px solid red;
-  background: #1725BF;
-  border-radius: 5px;
-  box-shadow: #B000FF 0 0 45px;
-  color: #fff;
-  line-height: 35px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.MT:hover { background: #1A33E0; box-shadow: #B000FF 0 0 35px; }
-
-/* الحبال */
-.party-lights { position: fixed; top:25px; width: 100%; max-width:900px; height: 150px; pointer-events:none; z-index:1000; }
-
 
 /* المضيف */
 .host{
@@ -232,6 +208,38 @@ body{
   .guest img{width:55px;height:55px;}
   .host img{width:40px;height:40px;}
   .host-name{font-size:0.95rem;}
+}
+.MT {
+  width: 290%;              /* عرض مرن حسب حجم الشاشة */
+  max-width: 665px;        /* لا يزيد عن 665px */
+  height: 35px;             /* ارتفاع العنصر */
+  position: fixed;          /* يثبت بالنسبة للشاشة */
+  bottom: 3px;             /* مسافة من أسفل الشاشة */
+  left: 50%;                /* توسيط أفقي */
+  transform: translateX(-50%); /* تعديل المركز */
+  text-align: center;       
+  border: 1px solid red;    
+  background: #1725BF;      
+  border-radius: 5px;       
+  box-shadow: #B000FF 0 0 45px;
+  color: #fff;              
+  line-height: 35px;        /* لمحاذاة النص عمودياً */
+  font-weight: bold;        
+  cursor: pointer;          
+  transition: all 0.3s ease;
+}
+
+.MT:hover {
+  background: #1A33E0;
+  box-shadow: #B000FF 0 0 35px;
+}
+.party-lights {
+  position: fixed;
+  top:25px;
+  width: 105%;
+  height: 150px;
+  pointer-events: none;
+  z-index: 1000;
 }
 
 /* الحبل المقوس */
@@ -613,7 +621,7 @@ const username = document.getElementById("username");
 const text = document.getElementById("text");
 
 if(username) username.textContent = "M";
-if(text) text.textContent = "مرحباً بك في بث LIVE الخاص بي! تفاعل معي ومع المشاهدين الآخرين.";
+if(text) text.textContent = "مرحبا بك في بث LIVE الخاص بي تفاعل معي ومع المشاهدين الآخرين من خلال التعليق وإبداء رأيك.تابع حسابي إذا استمتعت بفيديو اليوم";
 </script>
 </body>
 </html>
