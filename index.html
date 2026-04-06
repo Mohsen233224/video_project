@@ -5,203 +5,236 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎤 إدارة القستات PRO MAX</title>
 <style>
-/* ---------- Reset ---------- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* ---------- Body ---------- */
-body {
-  background: radial-gradient(circle at top, #0f2027, #000);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',sans-serif;
+  background: radial-gradient(circle at top,#0f2027,#000);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  padding:0px;
   min-height: 100vh;
 }
 
-/* ---------- Container ---------- */
-.container {
-  width: 95%;
-  max-width: 900px;
+.container{
+  width:90%;
+  max-width:900px;  /* حجم مناسب للشاشات الكبيرة */
+  margin:auto;
+  text-align:center;
+}
+
+/* شريط الحقوق */
+.MT {
+  width: 90%;
+  max-width:900px;
+  height: 35px;
+  position: fixed;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  position: relative;
-}
-
-/* ---------- المضيف ---------- */
-.host {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-.host img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid #00f2ea;
-  box-shadow: 0 0 20px #00f2ea;
-}
-.host-name {
+  border: 1px solid red;
+  background: #1725BF;
+  border-radius: 5px;
+  box-shadow: #B000FF 0 0 45px;
+  color: #fff;
+  line-height: 35px;
   font-weight: bold;
-  font-size: 1.2rem;
-  color: #00f2ea;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.MT:hover { background: #1A33E0; box-shadow: #B000FF 0 0 35px; }
+
+/* الحبال */
+.party-lights { position: fixed; top:25px; width: 100%; max-width:900px; height: 150px; pointer-events:none; z-index:1000; }
+
+
+/* المضيف */
+.host{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  justify-content:center;
+  margin-bottom:20px;
+}
+.host img{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:3px solid #00f2ea;
+  box-shadow:0 0 20px #00f2ea;
+}
+.host-name{
+  font-weight:bold;
+  font-size:1.2rem;
+  color:#00f2ea;
 }
 
-/* ---------- القست الحالي ---------- */
-.current-box-pro {
-  padding: 20px;
-  border-radius: 25px;
-  background: #0b0b0b;
-  margin-bottom: 20px;
-  overflow: hidden;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
-  position: relative;
+/* القست الحالي */
+.current-box-pro{
+  padding:20px;
+  border-radius:25px;
+  background:#0b0b0b;
+  position:relative;
+  margin-bottom:20px;
+  overflow:hidden;
+  box-shadow:0 0 25px rgba(0,255,255,0.2);
 }
-.current-box-pro::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 3px;
-  border-radius: 25px;
-  background: linear-gradient(45deg, #00f2ea, #ff00c8, #00ff88, #ffaa00);
-  background-size: 300% 300%;
-  animation: borderMove 6s linear infinite;
+.current-box-pro::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  padding:3px;
+  border-radius:25px;
+  background:linear-gradient(45deg,#00f2ea,#ff00c8,#00ff88,#ffaa00);
+  background-size:300% 300%;
+  animation:borderMove 6s linear infinite;
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
 }
-@keyframes borderMove {
-  0% { background-position: 0% }
-  100% { background-position: 300% }
+@keyframes borderMove{
+  0%{background-position:0%}
+  100%{background-position:300%}
 }
 
-/* ---------- الوقت ---------- */
-.timer {
-  font-size: 1.3rem;
-  color: #00ff88;
-  margin-top: 15px;
+/* الوقت */
+.timer{
+  text-align:center;
+  font-size:1.3rem;
+  color:#00ff88;
+  margin:15px 0 0 0;
 }
 
-/* ---------- ضيوف القست ---------- */
-.guests-pro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
-}
-.main-guest {
-  text-align: center;
-  animation: pulse 2s infinite;
-}
-.main-guest img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 5px solid #ffaa00;
-  box-shadow: 0 0 35px #ffaa00;
-}
-.main-guest div {
-  margin-top: 12px;
-  color: #ffaa00;
-  font-weight: bold;
-  font-size: 1.1rem;
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* القستات */
+.guests-pro{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:25px;
 }
 
-/* ---------- صفوف الدوائر ---------- */
-.row {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+/* المضيف الكبير */
+.main-guest{
+  text-align:center;
+  animation:pulse 2s infinite;
+}
+.main-guest img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:5px solid #ffaa00;
+  box-shadow:0 0 35px #ffaa00;
+}
+.main-guest div{
+  margin-top:12px;
+  color:#ffaa00;
+  font-weight:bold;
+  font-size:1.1rem;
+  max-width:180px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-/* ---------- الدوائر ---------- */
-.guest {
-  text-align: center;
-  transition: 0.3s;
-  width: 80px;
-  height: 80px;
-}
-.guest img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid #00f2ea;
-  box-shadow: 0 0 18px #00f2ea;
-}
-.guest.empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px dashed #555;
-  border-radius: 50%;
-  font-size: 28px;
-  color: #777;
-  box-shadow: none;
-}
-.guest span {
-  display: block;
-  margin-top: 6px;
-  font-size: 0.9rem;
-  max-width: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.guest:hover { transform: scale(1.15); }
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+/* صفوف الدوائر */
+.row{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin-top:20px;
+  flex-wrap:wrap;
 }
 
-/* ---------- طلبات القست ---------- */
-.request-card {
-  background: #111;
-  padding: 12px;
-  border-radius: 15px;
-  margin-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* الدوائر */
+.guest{
+  text-align:center;
+  transition:.3s;
+  width:80px;
+  height:80px;
+  position:relative;
 }
-.request-card img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.guest img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  border:3px solid #00f2ea;
+  box-shadow:0 0 18px #00f2ea;
 }
-.req-buttons button {
-  margin-left: 5px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+.guest.empty{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:3px dashed #555;
+  border-radius:50%;
+  font-size:28px;
+  color:#777;
+  box-shadow:none;
 }
-.accept { background: #00ff88; }
-.reject { background: #ff4d4d; color: #fff; }
+.guest.empty span{
+  display:none;
+}
+.guest span{
+  display:block;
+  margin-top:6px;
+  font-size:0.9rem;
+  max-width:90px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.guest:hover{transform:scale(1.15);}
 
-/* ---------- المصابيح الحية ---------- */
-.party-lights {
-  position: fixed;
-  top: 25px;
-  width: 100%;
-  height: 150px;
-  pointer-events: none;
-  z-index: 1000;
+/* نبض */
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+  100%{transform:scale(1);}
 }
+
+/* طلبات القست */
+.request-card{
+  background:#111;
+  padding:12px;
+  border-radius:15px;
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.request-card img{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+}
+.req-buttons button{
+  margin-left:5px;
+  padding:6px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.accept{background:#00ff88;}
+.reject{background:#ff4d4d;color:#fff;}
+
+/* تجاوب مع الشاشات الصغيرة */
+@media(max-width:900px){
+  .main-guest img{width:100px;height:100px;}
+  .guest img{width:65px;height:65px;}
+  .host img{width:50px;height:50px;}
+  .host-name{font-size:1rem;}
+}
+@media(max-width:600px){
+  .main-guest img{width:80px;height:80px;}
+  .guest img{width:55px;height:55px;}
+  .host img{width:40px;height:40px;}
+  .host-name{font-size:0.95rem;}
+}
+
+/* الحبل المقوس */
 .light-curve {
   position: absolute;
   top: 55px;
@@ -210,8 +243,17 @@ body {
   justify-content: space-around;
   transform-origin: top center;
 }
-.curve1 { left: 0; transform: rotate(-20deg); }
-.curve2 { right: 0; transform: rotate(20deg); }
+
+.curve1 {
+  left: 0;
+  transform: rotate(-20deg);
+}
+.curve2 {
+  right: 0;
+  transform: rotate(20deg);
+}
+
+/* الحبل */
 .light-curve::before {
   content: '';
   position: absolute;
@@ -220,54 +262,121 @@ body {
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: #444;
+  background: #444; /* لون الحبل */
 }
+
+/* المصابيح */
 .bulb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  background-color: red; /* اللون الابتدائي */
   box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
   animation: sparkle 1s infinite alternate, swing 3s infinite ease-in-out;
-  background-color: var(--bulb-color, red);
   position: relative;
   top: 10px;
+  /* اللون الحقيقي سيكون من JS */
+  background-color: var(--bulb-color, red);
 }
+/* لمعان سريع متعدد الألوان */
+@keyframes rainbow {
+  0% { background-color: #ff0000; }
+  14% { background-color: #ff9900; }
+  28% { background-color: #ffff00; }
+  42% { background-color: #33ff00; }
+  56% { background-color: #00ffff; }
+  70% { background-color: #0033ff; }
+  84% { background-color: #9900ff; }
+  100% { background-color: #ff00ff; }
+}
+
+/* تأرجح المصابيح */
 @keyframes swing {
   0% { transform: rotate(-15deg); }
   50% { transform: rotate(15deg); }
   100% { transform: rotate(-15deg); }
 }
+
+/* لمعان بسيط */
 @keyframes sparkle {
   0% { opacity: 0.4; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.2); }
   100% { opacity: 0.4; transform: scale(0.8); }
 }
+/* صندوق ضيوف الشرف */
+.vip-box {
+  position: absolute;
+  top: -15px; /* وسط الحبلين */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 145px;      /* عرض المستطيل */
+  height: 65px;      /* ارتفاع المستطيل */
+  background: linear-gradient(45deg,#00f2ea,#ff00c8,#ffaa00);
+  border-radius: 15px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 25px rgba(255,255,255,0.3);
+  z-index: 1001; /* فوق الحبل */
+}
 
-/* ---------- البطاقات والنافذة ---------- */
+/* خطوط الحبل تصل للمستطيل */#2A00FF
+.light-curve.curve1::after,
+.light-curve.curve2::after {
+  content: "";
+  position: absolute;
+  width: 50px;  /* طول الخط */
+  height: 4px;
+  background: #444;
+  top: 50%;
+}
+
+.light-curve.curve1::after {
+  right: -50px;  /* من نهاية الحبل الأيسر نحو المستطيل */
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.light-curve.curve2::after {
+  
+  left: -50px;   /* من نهاية الحبل الأيمن نحو المستطيل */
+  transform: translateY(-50%) rotate(0deg);
+}
+
+/* الكرت */
 .card {
   position: relative;
-  width: 100%;
+  width: 90%;
   max-width: 700px;
   height: 200px;
   border-radius: 20px;
-  margin: 30px auto 0;
+  margin-right: 4%;
+  margin-top: 3%;
   overflow: hidden;
   background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPnlybzTv_9UDA1DTBV-CKwatxUu-xwWAXhQ&s') center/cover no-repeat;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
 }
+
+/* طبقة الضباب */
 .overlay {
   position: absolute;
   width: 100%;
   height: 100%;
   backdrop-filter: blur(12px);
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
+
+/* المحتوى */
 .content {
   position: relative;
   color: white;
   padding: 20px;
   text-align: right;
 }
+
+/* صورة البروفايل */
 .profile {
   position: absolute;
   top: 15px;
@@ -278,96 +387,94 @@ body {
   border: 3px solid white;
   object-fit: cover;
 }
+
+/* اسم المستخدم */
 #username {
   position: absolute;
-  top: 95px;
+  top:95px;
   left: 89%;
-  font-size: 20px;
+  font-size: 28px;
   opacity: 0.9;
 }
+
+/* النص */
 #text {
   margin-top: 105px;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* ---------- تذييل الحقوق ---------- */
-.MT {
-  width: 100%;
-  max-width: 900px;
-  margin: 20px auto;
-  text-align: center;
-  padding: 8px;
-  border-radius: 5px;
-  background: #1725BF;
-  color: #fff;
-  font-weight: bold;
-  box-shadow: 0 0 15px #B000FF;
-}
-
-/* ---------- استجابة ---------- */
-@media(max-width: 900px){
-  .main-guest img { width: 100px; height: 100px; }
-  .guest img { width: 65px; height: 65px; }
-  .host img { width: 50px; height: 50px; }
-  .host-name { font-size: 1rem; }
-}
-@media(max-width: 600px){
-  .main-guest img { width: 80px; height: 80px; }
-  .guest img { width: 55px; height: 55px; }
-  .host img { width: 40px; height: 40px; }
-  .host-name { font-size: 0.95rem; }
+  font-size: 18px;
+  line-height: 1.8;
 }
 </style>
 </head>
 <body>
+  <!-- حبل المصابيح المقوس -->
 <div class="party-lights">
-  <div class="vip-box">ضيوف الشرف</div>
+  <!-- المستطيل المركزي -->
+<div class="vip-box">
+  ضيوف الشرف
+  <!-- يمكن إبقاء المصابيح تمر فوقه -->
+</div>
+  <!-- الحبل الأول -->
   <div class="light-curve curve1">
-    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    <div class="bulb" style="--i:0;"></div>
+    <div class="bulb" style="--i:1;"></div>
+    <div class="bulb" style="--i:2;"></div>
+    <div class="bulb" style="--i:3;"></div>
+    <div class="bulb" style="--i:4;"></div>
   </div>
+  <!-- الحبل الثاني -->
   <div class="light-curve curve2">
-    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    <div class="bulb" style="--i:0;"></div>
+    <div class="bulb" style="--i:1;"></div>
+    <div class="bulb" style="--i:2;"></div>
+    <div class="bulb" style="--i:3;"></div>
+    <div class="bulb" style="--i:4;"></div>
   </div>
 </div>
-
 <div class="container">
-  <div class="host">
-    <img src="profile.jpeg">
-    <div class="host-name">المضيف: M 🔥</div>
-  </div>
 
-  <div class="current-box-pro">
-    <h3>🔥 القست الحالي</h3>
-    <div class="guests-pro">
-      <div class="main-guest">
-        <img src="profile.jpeg">
-        <div>M 🔥</div>
-      </div>
-      <div class="row" id="guestSlotsRow1"></div>
-      <div class="row" id="guestSlotsRow2"></div>
-    </div>
-    <div class="timer" id="timer">00:00:00</div>
-  </div>
-
-  <div id="requests"></div>
-
-  <div class="card">
-    <div class="overlay"></div>
-    <div class="content">
-      <img src="profile.jpeg" class="profile">
-      <div id="username">M</div>
-      <p id="text">
-        مرحباً بك في بث LIVE الخاص بي! تفاعل معي ومع المشاهدين الآخرين من خلال التعليق وإبداء رأيك. تابع حسابي إذا استمتعت بالفيديو اليوم.
-      </p>
-    </div>
-  </div>
+<div class="host">
+<img src="profile.jpeg">
+<div class="host-name">المضيف: M 🔥</div>
 </div>
 
-<div class="MT">جميع الحقوق محفوظة لدى محسن © 2025</div>
+<div class="current-box-pro"><br />
+<h3>🔥 القست الحالي</h3><br /><br />
+<div class="guests-pro">
+<div class="main-guest">
+<img src="profile.jpeg">
+<div>M 🔥</div>
+</div>
 
+<div class="row" id="guestSlotsRow1"></div>
+<div class="row" id="guestSlotsRow2"></div>
+</div>
+<br><br />
+<hr>
+<div class="timer" id="timer">00:00:00</div>
+</div>
+
+<div id="requests"></div>
+<!-- نافذة Live الترحيبية -->
+<div class="card">
+  <div class="overlay"></div>
+  <div class="content">
+    <img src="profile.jpeg" alt="profile" class="profile">
+    <div id="username">M</div>
+    <p id="text">
+      مرحباً بك في بث LIVE الخاص بي! تفاعل معي ومع المشاهدين الآخرين من خلال التعليق وإبداء رأيك.
+      تابع حسابي إذا استمتعت بالفيديو اليوم!
+    </p>
+  </div>
+</div>
+</div>
+<div class="MT">
+  <p style="direction: rtl;">جميع الحقوق محفوظه لدى محسن© 2025</p>
+</div>
 <script>
-let slots = 8, acceptedGuests = [], requests = [];
+  // ======= المتغيرات =======
+let slots = 8; 
+let acceptedGuests = []; 
+let requests = []; 
 let pendingGuests = [
   {name:"الجنوبي",img:"https://i.ibb.co/d0J8TQfF/Jn.png"},
   {name:"سكون",img:"https://i.ibb.co/HT3KKgwy/Skn.png"},
@@ -378,77 +485,135 @@ let pendingGuests = [
   {name:"صمت الرحيل",img:"https://i.ibb.co/8DW4t5Nb/smt.png"},
   {name:"مقعد الرشيدي",img:"https://i.ibb.co/MkLwkLGj/mq3d.png"}
 ];
-let currentIndex = 0;
+let currentIndex = 0; 
 
-// إنشاء الخانات
+// ======= إنشاء الخانات =======
 function createSlots() {
   let row1 = document.getElementById("guestSlotsRow1");
   let row2 = document.getElementById("guestSlotsRow2");
-  row1.innerHTML = ""; row2.innerHTML = "";
-  for(let i=0;i<4;i++) row1.innerHTML += `<div class="guest empty" id="slot${i}"><div>+</div></div>`;
-  for(let i=4;i<8;i++) row2.innerHTML += `<div class="guest empty" id="slot${i}"><div>+</div></div>`;
+  row1.innerHTML = "";
+  row2.innerHTML = "";
+  
+  for (let i = 0; i < 4; i++) {
+    row1.innerHTML += `
+      <div class="guest empty" id="slot${i}">
+        <div>+</div>
+      </div>`;
+  }
+  
+  for (let i = 4; i < 8; i++) {
+    row2.innerHTML += `
+      <div class="guest empty" id="slot${i}">
+        <div>+</div>
+      </div>`;
+  }
 }
 createSlots();
 
-// عرض الطلبات
-function renderRequests() {
-  let box = document.getElementById("requests"); box.innerHTML="";
+// ======= عرض الطلبات =======
+function renderRequests(){
+  let box = document.getElementById("requests");
+  box.innerHTML="";
   requests.forEach((r,i)=>{
-    box.innerHTML += `<div class="request-card">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <img src="${r.img}"><div>${r.name}</div>
+    box.innerHTML += `
+      <div class="request-card">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="${r.img}">
+          <div>${r.name}</div>
+        </div>
+        <div class="req-buttons">
+          <button class="accept" onclick="acceptRequest(${i})">✔</button>
+          <button class="reject" onclick="rejectRequest(${i})">✖</button>
+        </div>
       </div>
-      <div class="req-buttons">
-        <button class="accept" onclick="acceptRequest(${i})">✔</button>
-        <button class="reject" onclick="rejectRequest(${i})">✖</button>
-      </div>
-    </div>`;
+    `;
   });
 }
 
-// إرسال الطلب التالي تدريجيًا
-function showNextRequest() {
+// ======= إرسال الطلب التالي تدريجيًا =======
+function showNextRequest(){
   if(currentIndex < pendingGuests.length){
     requests.push(pendingGuests[currentIndex]);
-    currentIndex++; renderRequests();
+    currentIndex++;
+    renderRequests();
   }
 }
+
+// أول طلب يظهر مباشرة
 showNextRequest();
-setInterval(showNextRequest,60000);
 
-// قبول ورفض الطلب
+// كل دقيقة يظهر طلب جديد تدريجي
+setInterval(() => {
+  showNextRequest();
+}, 60000); // 60000ms = 1 دقيقة
+
+// ======= قبول الطلب =======
 function acceptRequest(i) {
-  if(acceptedGuests.length<slots){
-    let guest = requests[i]; acceptedGuests.push(guest);
-    let slot = document.getElementById("slot"+(acceptedGuests.length-1));
+  if (acceptedGuests.length < slots) {
+    let guest = requests[i];
+    acceptedGuests.push(guest);
+    
+    let slot = document.getElementById("slot" + (acceptedGuests.length - 1));
+    
     slot.classList.remove("empty");
-    slot.innerHTML = `<img src="${guest.img}"><span>${guest.name}</span>`;
-    requests.splice(i,1); renderRequests();
+    slot.innerHTML = `
+      <img src="${guest.img}">
+      <span>${guest.name}</span>
+    `;
+    
+    requests.splice(i, 1);
+    renderRequests();
   }
 }
-function rejectRequest(i){ requests.splice(i,1); renderRequests(); }
 
-// المؤقت
-let time=0;
-setInterval(()=>{
-  time++;
-  let h=String(Math.floor(time/3600)).padStart(2,'0');
-  let m=String(Math.floor((time%3600)/60)).padStart(2,'0');
-  let s=String(time%60).padStart(2,'0');
-  document.getElementById("timer").innerText=`${h}:${m}:${s}`;
-},1000);
+// ======= رفض الطلب =======
+function rejectRequest(i){
+  requests.splice(i,1);
+  renderRequests();
+}
 
-// المصابيح
-const bulbs=document.querySelectorAll('.bulb');
-const colors=["#ff0000","#ff9900","#ffff00","#33ff00","#00ffff","#0033ff","#9900ff","#ff00ff"];
-function randomColor(){ return colors[Math.floor(Math.random()*colors.length)]; }
-function updateBulbs(){ bulbs.forEach(b=>b.style.setProperty('--bulb-color', randomColor())); }
-setInterval(updateBulbs,500);
+// ======= المؤقت =======
+let time = 0;
+function startTimer(){
+  setInterval(()=>{
+    time++;
+    let h = String(Math.floor(time/3600)).padStart(2,'0');
+    let m = String(Math.floor((time%3600)/60)).padStart(2,'0');
+    let s = String(time%60).padStart(2,'0');
+    document.getElementById("timer").innerText = `${h}:${m}:${s}`;
+  },600);
+}
+startTimer();
+
+// ======= المصابيح =======
+const bulbs = document.querySelectorAll('.bulb');
+const colors = ["#ff0000","#ff9900","#ffff00","#33ff00","#00ffff","#0033ff","#9900ff","#ff00ff"];
+
+function randomColor() {
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function updateBulbs() {
+  bulbs.forEach(bulb => {
+    if (Math.random() < 0.2) {
+      const other = bulbs[Math.floor(Math.random() * bulbs.length)];
+      bulb.style.setProperty('--bulb-color', other.style.getPropertyValue('--bulb-color') || randomColor());
+    } else {
+      bulb.style.setProperty('--bulb-color', randomColor());
+    }
+  });
+}
+
+// تغيير الألوان
+setInterval(updateBulbs, 500);
 updateBulbs();
 
-// النصوص
-document.getElementById("username").textContent="M";
-document.getElementById("text").textContent="مرحبا بك في بث LIVE الخاص بي تفاعل معي ومع المشاهدين الآخرين من خلال التعليق وإبداء رأيك. تابع حسابي إذا استمتعت بفيديو اليوم";
+// ======= النص =======
+const username = document.getElementById("username");
+const text = document.getElementById("text");
+
+if(username) username.textContent = "M";
+if(text) text.textContent = "مرحباً بك في بث LIVE الخاص بي! تفاعل معي ومع المشاهدين الآخرين.";
 </script>
 </body>
 </html>
