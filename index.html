@@ -1,500 +1,298 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎤 إدارة القستات PRO MAX</title>
-<style>
-/* ==========================
-   Reset & Base
-========================== */
-*{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:'Segoe UI',sans-serif;
-  background: radial-gradient(circle at top,#0f2027,#000);
-  color:#fff;
-  display:flex;
-  justify-content:center;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>موقعي الشخصي VIP</title><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet"><style>
+*{
+  margin:0;
   padding:0;
-  min-height:100vh;
+  box-sizing:border-box;
+  font-family:'Cairo', sans-serif;
 }
 
-/* ==========================
-   Container
-========================== */
-.container{
-  width:95%;
-  max-width:1200px;
-  margin:auto;
-  text-align:center;
+body{
+  background:#000;
+  color:#fff;
+  overflow-x:hidden;
 }
 
-/* ==========================
-   المضيف
-========================== */
-.host{
+#bg{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+header{
   display:flex;
+  justify-content:space-between;
   align-items:center;
-  gap:1rem;
-  justify-content:center;
-  margin-bottom:1.5rem;
-}
-.host img{
-  width:5rem;
-  height:5rem;
-  border-radius:50%;
-  border:3px solid #00f2ea;
-  box-shadow:0 0 20px #00f2ea;
-  object-fit:cover;
-}
-.host-name{
-  font-weight:bold;
-  font-size:1.2rem;
-  color:#00f2ea;
-}
-
-/* ==========================
-   القست الحالي
-========================== */
-.current-box-pro{
-  padding:1.5rem;
-  border-radius:25px;
-  background:#0b0b0b;
-  position:relative;
-  margin-bottom:2rem;
-  overflow:hidden;
-  box-shadow:0 0 25px rgba(0,255,255,0.2);
-}
-.current-box-pro::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  padding:3px;
-  border-radius:25px;
-  background:linear-gradient(45deg,#00f2ea,#ff00c8,#00ff88,#ffaa00);
-  background-size:300% 300%;
-  animation:borderMove 6s linear infinite;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-}
-@keyframes borderMove{
-  0%{background-position:0%}
-  100%{background-position:300%}
-}
-
-/* ==========================
-   الوقت
-========================== */
-.timer{
-  text-align:center;
-  font-size:1.3rem;
-  color:#00ff88;
-  margin-top:1rem;
-}
-
-/* ==========================
-   الضيوف
-========================== */
-.guests-pro{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:1.5rem;
-}
-.main-guest{
-  text-align:center;
-  animation:pulse 2s infinite;
-}
-.main-guest img{
-  width:10rem;
-  height:10rem;
-  border-radius:50%;
-  border:5px solid #ffaa00;
-  box-shadow:0 0 35px #ffaa00;
-  object-fit:cover;
-}
-.main-guest div{
-  margin-top:.75rem;
-  color:#ffaa00;
-  font-weight:bold;
-  font-size:1.1rem;
-  max-width:180px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-/* صفوف الدوائر */
-.row{
-  display:flex;
-  justify-content:center;
-  gap:1.25rem;
-  margin-top:1.25rem;
+  padding:15px 25px;
+  position:sticky;
+  top:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  border-bottom:1px solid #1f2937;
+  z-index:1000;
   flex-wrap:wrap;
 }
-.guest{
+
+.logo {
+  font-size: 20px;
+  font-weight: 900;
+  color: #38bdf8;
+  display: flex;
+  margin: 4%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo .line {
+  width: 170px;
+  height: 2px;
+  background: #fff;
+  margin-top: 6px;
+  border-radius: 5px;
+  opacity: 0.8;
+}
+
+nav a{
+  color:#aaa;
+  margin:5px 10px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:#38bdf8;
+}
+
+.hero{
   text-align:center;
-  transition:.3s;
-  width:5rem;
-  height:5rem;
-  position:relative;
+  padding:120px 20px 60px;
 }
-.guest img{
-  width:100%;
-  height:100%;
+
+.avatar{
+  width:120px;
+  height:120px;
   border-radius:50%;
-  border:3px solid #00f2ea;
-  box-shadow:0 0 18px #00f2ea;
-  object-fit:cover;
-}
-.guest.empty{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:3px dashed #555;
-  border-radius:50%;
-  font-size:1.5rem;
-  color:#777;
-  box-shadow:none;
-}
-.guest span{
-  display:block;
-  margin-top:0.25rem;
-  font-size:0.9rem;
-  max-width:5rem;
+  border:3px solid #38bdf8;
+  margin:auto;
   overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.guest:hover{transform:scale(1.15);}
-
-/* ==========================
-   نبض
-========================== */
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
+  box-shadow:0 0 20px #38bdf8;
 }
 
-/* ==========================
-   طلبات القست
-========================== */
-.request-card{
-  background:#111;
-  padding:.75rem;
-  border-radius:15px;
-  margin-top:.75rem;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.avatar img{
+  width:100%;
 }
-.request-card img{
-  width:3rem;
-  height:3rem;
-  border-radius:50%;
-  object-fit:cover;
+
+.hero h1{
+  font-size:clamp(28px,5vw,55px);
+  margin-top:20px;
+  font-weight:900;
 }
-.req-buttons button{
-  margin-left:.3rem;
-  padding:.3rem .75rem;
+
+.hero span{
+  color:#38bdf8;
+}
+
+.type{
+  color:#aaa;
+  margin-top:10px;
+  min-height:30px;
+}
+
+.btn{
+  margin-top:20px;
+  padding:12px 25px;
   border:none;
-  border-radius:8px;
-  cursor:pointer;
+  background:#38bdf8;
+  color:#000;
   font-weight:bold;
-}
-.accept{background:#00ff88;}
-.reject{background:#ff4d4d;color:#fff;}
-
-/* ==========================
-   الشاشات الصغيرة
-========================== */
-@media(max-width:900px){
-  .main-guest img{width:8rem;height:8rem;}
-  .guest img{width:4.25rem;height:4.25rem;}
-  .host img{width:4rem;height:4rem;}
-  .host-name{font-size:1rem;}
-}
-@media(max-width:600px){
-  .main-guest img{width:6rem;height:6rem;}
-  .guest img{width:3rem;height:3rem;}
-  .host img{width:2.5rem;height:2.5rem;}
-  .host-name{font-size:.95rem;}
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-/* ==========================
-   بطاقة الترحيب
-========================== */
-.card{
-  position: relative;
-  width:100%;
-  max-width:700px;
-  height:auto;
-  border-radius:20px;
-  margin:2% auto;
-  overflow:hidden;
-  background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPnlybzTv_9UDA1DTBV-CKwatxUu-xwWAXhQ&s') center/cover no-repeat;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
-}
-.overlay{
-  position:absolute;
-  width:100%;
-  height:100%;
-  backdrop-filter: blur(12px);
-  background: rgba(0,0,0,0.5);
-}
-.content{
-  position:relative;
-  color:white;
-  padding:1.25rem;
-  text-align:right;
-}
-.profile{
-  position:absolute;
-  top:1rem;
-  left:80%;
-  width:4.5rem;
-  height:4.5rem;
-  border-radius:50%;
-  border:3px solid white;
-  object-fit:cover;
-}
-#username{
-  position:absolute;
-  top:5rem;
-  left:78%;
-  font-size:1.75rem;
-  opacity:0.9;
-}
-#text{
-  margin-top:6rem;
-  font-size:1rem;
-  line-height:1.6;
+.btn:hover{
+  transform:scale(1.05);
+  background:#0ea5e9;
 }
 
-/* ==========================
-   شريط الحقوق
-========================== */
-.MT{
-  width:90%;
-  max-width:1200px;
-  height:2.2rem;
-  position:fixed;
-  bottom:3px;
-  left:50%;
-  transform:translateX(-50%);
+.section{
+  padding:60px 20px;
   text-align:center;
-  border-radius:5px;
-  background:#1725BF;
-  color:#fff;
-  line-height:2.2rem;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow: #B000FF 0 0 35px;
-  transition:all 0.3s ease;
 }
-.MT:hover{background:#1A33E0; box-shadow:#B000FF 0 0 25px;}
 
-/* ==========================
-   المصابيح
-========================== */
-.party-lights{position:fixed;top:25px;width:100%;height:150px;pointer-events:none;z-index:1000;}
-.light-curve{position:absolute;top:55px;width:50%;display:flex;justify-content:space-around;transform-origin:top center;}
-.curve1{left:0;transform:rotate(-20deg);}
-.curve2{right:0;transform:rotate(20deg);}
-.light-curve::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;
-  width:100%;
-  height:4px;
-  border-radius:2px;
-  background:#444;
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-top:30px;
 }
-.bulb{
-  width:20px;height:20px;
-  border-radius:50%;
-  background-color:var(--bulb-color, red);
-  box-shadow:0 0 10px currentColor,0 0 20px currentColor;
-  animation:sparkle 1s infinite alternate,swing 3s infinite ease-in-out;
-  position:relative;
-  top:10px;
-}
-@keyframes swing{
-  0%{transform:rotate(-15deg);}
-  50%{transform:rotate(15deg);}
-  100%{transform:rotate(-15deg);}
-}
-@keyframes sparkle{
-  0%{opacity:0.4;transform:scale(0.8);}
-  50%{opacity:1;transform:scale(1.2);}
-  100%{opacity:0.4;transform:scale(0.8);}
-}
-</style>
-</head>
-<body>
 
-<div class="party-lights">
-  <div class="vip-box">ضيوف الشرف</div>
-  <div class="light-curve curve1">
-    <div class="bulb" style="--i:0;"></div>
-    <div class="bulb" style="--i:1;"></div>
-    <div class="bulb" style="--i:2;"></div>
-    <div class="bulb" style="--i:3;"></div>
-    <div class="bulb" style="--i:4;"></div>
-  </div>
-  <div class="light-curve curve2">
-    <div class="bulb" style="--i:0;"></div>
-    <div class="bulb" style="--i:1;"></div>
-    <div class="bulb" style="--i:2;"></div>
-    <div class="bulb" style="--i:3;"></div>
-    <div class="bulb" style="--i:4;"></div>
-  </div>
+.card{
+  background:rgba(255,255,255,0.05);
+  padding:20px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,0.1);
+  transition:0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  border-color:#38bdf8;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.gallery div{
+  height:120px;
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  border-radius:10px;
+}
+
+.social a{
+  margin:0 10px;
+  font-size:20px;
+  color:#38bdf8;
+  text-decoration:none;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  border-top:1px solid #1f2937;
+  color:#666;
+}
+
+@media(max-width:768px){
+  nav{text-align:center; width:100%;}
+}
+</style></head><body><canvas id="bg"></canvas>
+
+<header>
+<div class="logo">
+  موقعي الشخصي
+  <div class="line"></div>
 </div>
-
-<div class="container">
-
-  <div class="host">
-    <img src="profile.jpeg">
-    <div class="host-name">المضيف: M 🔥</div>
+  <nav>
+    <a href="#home">الرئيسية</a>
+    <a href="#about">عنّي</a>
+    <a href="#skills">مهاراتي</a>
+    <a href="#gallery">معرضي</a>
+    <a href="#contact">تواصل</a>
+  </nav>
+</header><section class="hero" id="home">
+  <div class="avatar">
+    <img src="profiet.png" />
+  </div>  <h1>أنا <span> محسن</span></h1>
+  <div class="type" id="type"></div>  <button class="btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+    اكتشف عني
+  </button>
+</section><section class="section" id="about">
+  <h2>من أنا</h2>
+  <p style="color:#aaa;max-width:750px;margin:auto">
+    أنا محسن، شخص مهتم بالتقنية وصناعة المواقع والتصميم الحديث. أحب تطوير الواجهات وتجربة الأفكار الجديدة في عالم الويب، وأسعى لبناء مشاريع رقمية احترافية وسريعة ومتجاوبة مع جميع الأجهزة.
+  </p>
+</section><section class="section" id="skills">
+  <h2>مهاراتي</h2>
+  <div class="cards">
+    <div class="card">HTML</div>
+    <div class="card">CSS</div>
+    <div class="card">JavaScript</div>
+    <div class="card">تصميم واجهات</div>
   </div>
-
-  <div class="current-box-pro">
-    <h3>🔥 القست الحالي</h3>
-    <div class="guests-pro">
-      <div class="main-guest">
-        <img src="profile.jpeg">
-        <div>M 🔥</div>
-      </div>
-      <div class="row" id="guestSlotsRow1"></div>
-      <div class="row" id="guestSlotsRow2"></div>
-    </div>
-    <div class="timer" id="timer">00:00:00</div>
+</section><section class="section" id="gallery">
+  <h2>أعمالي</h2>
+  <div class="gallery">
+    <div>لايوجد أعمال حالياً</div><div>لايوجد أعمال حالياً</div><div>لايوجد أعمال حالياً</div><div>لايوجد أعمال حالياً</div>
   </div>
+</section><section class="section" id="contact">
+  <h2>تواصل معي</h2>
+  <p style="color:#aaa">
+    يمكنك الاطلاع على بطاقتي والتواصل معي عبر الحسابات المتوفرة <br><br> <a href="Card.html" target="_blank" style="display:inline-block;padding:12px 18px;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#000;font-weight:bold;border-radius:12px;text-decoration:none;box-shadow:0 0 15px #38bdf8;transition:0.3s;"> اضغط هنا لعرض البطاقة </a>
 
-  <div id="requests"></div>
+  </p>
+</section><footer>
+© 2026 جميع الحقوق محفوظة
+</footer><script>
+// typing effect
+const text = ["مطور مواقع", "مصمم واجهات", "صانع محتوى تقني"];
+let i=0, j=0, current="", isDeleting=false;
 
-  <div class="card">
-    <div class="overlay"></div>
-    <div class="content">
-      <img src="profile.jpeg" alt="profile" class="profile">
-      <div id="username">M</div>
-      <p id="text">
-        مرحباً بك في بث LIVE الخاص بي! تفاعل معي ومع المشاهدين الآخرين.
-      </p>
-    </div>
-  </div>
-</div>
+function type(){
+  current = text[i];
+  document.getElementById("type").innerHTML = current.substring(0,j);
 
-<div class="MT">جميع الحقوق محفوظه لدى محسن© 2025</div>
+  if(!isDeleting && j<=current.length){ j++; }
+  if(isDeleting && j>=0){ j--; }
 
-<script>
-// ======= المتغيرات =======
-let slots = 8; 
-let acceptedGuests = []; 
-let requests = []; 
-let pendingGuests = [
-  {name:"الجنوبي",img:"https://i.ibb.co/d0J8TQfF/Jn.png"},
-  {name:"سكون",img:"https://i.ibb.co/HT3KKgwy/Skn.png"},
-  {name:"~🇸🇦 mehsen",img:"https://i.ibb.co/dsjrRgpV/hsn.png"},
-  {name:"هدليتسء",img:"https://b.top4top.io/p_374507np10.jpg"},
-  {name:"سكون الروح",img:"https://i.ibb.co/VpJ41v4f/Skn-R.png"},
-  {name:"R",img:"https://c.top4top.io/p_3745csx751.jpg"},
-  {name:"صمت الرحيل",img:"https://i.ibb.co/8DW4t5Nb/smt.png"},
-  {name:"مقعد الرشيدي",img:"https://i.ibb.co/MkLwkLGj/mq3d.png"}
-];
-let currentIndex = 0; 
-
-// ======= إنشاء الخانات =======
-function createSlots() {
-  let row1 = document.getElementById("guestSlotsRow1");
-  let row2 = document.getElementById("guestSlotsRow2");
-  row1.innerHTML = "";
-  row2.innerHTML = "";
-  for (let i = 0; i < 4; i++){
-    row1.innerHTML += `<div class="guest empty" id="slot${i}"><div>+</div></div>`;
+  if(j==current.length){
+    isDeleting=true;
+    setTimeout(type,800);
+    return;
   }
-  for (let i = 4; i < 8; i++){
-    row2.innerHTML += `<div class="guest empty" id="slot${i}"><div>+</div></div>`;
+
+  if(j==0){
+    isDeleting=false;
+    i=(i+1)%text.length;
   }
+
+  setTimeout(type,120);
 }
-createSlots();
 
-// ======= عرض الطلبات =======
-function renderRequests(){
-  let box = document.getElementById("requests");
-  box.innerHTML="";
-  requests.forEach((r,i)=>{
-    box.innerHTML += `<div class="request-card">
-      <div style="display:flex;align-items:center;gap:.5rem;">
-        <img src="${r.img}">
-        <div>${r.name}</div>
-      </div>
-      <div class="req-buttons">
-        <button class="accept" onclick="acceptRequest(${i})">✔</button>
-        <button class="reject" onclick="rejectRequest(${i})">✖</button>
-      </div>
-    </div>`;
+type();
+
+// particles
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles=[];
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2,
+    d:Math.random()*1
   });
 }
 
-// ======= إرسال الطلب التالي تدريجيًا =======
-function showNextRequest(){
-  if(currentIndex < pendingGuests.length){
-    requests.push(pendingGuests[currentIndex]);
-    currentIndex++;
-    renderRequests();
-  }
-}
-showNextRequest();
-setInterval(showNextRequest,60000);
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#38bdf8";
 
-// ======= قبول الطلب =======
-function acceptRequest(i){
-  if(acceptedGuests.length<slots){
-    let guest=requests[i];
-    acceptedGuests.push(guest);
-    let slot=document.getElementById("slot"+(acceptedGuests.length-1));
-    slot.classList.remove("empty");
-    slot.innerHTML=`<img src="${guest.img}"><span>${guest.name}</span>`;
-    requests.splice(i,1);
-    renderRequests();
-  }
-}
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
 
-// ======= رفض الطلب =======
-function rejectRequest(i){requests.splice(i,1);renderRequests();}
-
-// ======= المؤقت =======
-let time=0;
-function startTimer(){
-  setInterval(()=>{
-    time++;
-    let h=String(Math.floor(time/3600)).padStart(2,'0');
-    let m=String(Math.floor((time%3600)/60)).padStart(2,'0');
-    let s=String(time%60).padStart(2,'0');
-    document.getElementById("timer").innerText=`${h}:${m}:${s}`;
-  },1000);
-}
-startTimer();
-
-// ======= المصابيح =======
-const bulbs=document.querySelectorAll('.bulb');
-const colors=["#ff0000","#ff9900","#ffff00","#33ff00","#00ffff","#0033ff","#9900ff","#ff00ff"];
-function randomColor(){return colors[Math.floor(Math.random()*colors.length)];}
-function updateBulbs(){
-  bulbs.forEach(bulb=>{
-    if(Math.random()<0.2){
-      const other=bulbs[Math.floor(Math.random()*bulbs.length)];
-      bulb.style.setProperty('--bulb-color',other.style.getPropertyValue('--bulb-color')||randomColor());
-    }else{bulb.style.setProperty('--bulb-color',randomColor());}
+  particles.forEach(p=>{
+    p.y += p.d;
+    if(p.y>canvas.height){
+      p.y=0;
+      p.x=Math.random()*canvas.width;
+    }
   });
 }
-setInterval(updateBulbs,500);
-updateBulbs();
-</script>
-</body>
+
+setInterval(draw,30);
+
+window.addEventListener("resize",()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+</script></body>
 </html>

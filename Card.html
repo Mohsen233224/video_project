@@ -1,0 +1,215 @@
+<!DOCTYPE html>  <html lang="ar" dir="rtl">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>بطاقة عبدالله</title>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  <style>  
+*{  
+  margin:0;  
+  padding:0;  
+  box-sizing:border-box;  
+  font-family:'Cairo', sans-serif;  
+}  
+  
+body {  
+  background: #000;  
+  color: #fff;  
+ overflow:hidden;  
+}  
+  
+/* الهيدر */  
+header{  
+  position:fixed;  
+  top:0;  
+  width:100%;  
+  padding:10px;  
+  display:flex;  
+  justify-content:space-between;  
+  align-items:center;  
+  background:rgba(0,0,0,0.6);  
+  backdrop-filter: blur(10px);  
+  border-bottom:1px solid #1f2937;  
+  z-index:10;  
+}  
+  
+/* زر الرجوع (أيقونة فقط) */  
+.back-btn{  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  width:42px;  
+  height:42px;  
+  background:#1f2937;  
+  border:none;  
+  border-radius:50%;  
+  cursor:pointer;  
+  transition:0.2s;  
+}  
+  
+.back-btn:hover{  
+  background:#374151;  
+  transform:scale(1.1);  
+}  
+  
+.back-btn svg{  
+  display:block;  
+}  
+  
+/* العنوان */  
+.title{  
+  color:#38bdf8;  
+  font-weight:900;  
+  margin-left: 15%;  
+    display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  width:105px;  
+  height:42px;  
+  background:#1f2937;  
+  border:none;  
+  border-radius:10%;  
+  cursor:pointer;  
+  transition:0.2s;  
+}  
+  
+/* زر المشاركة */  
+.share-btn{  
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);  
+  color:#000;  
+  border:none;  
+  padding:10px 15px;  
+  border-radius:10px;  
+  font-weight:bold;  
+  cursor:pointer;  
+}  
+  
+/* الصورة */  
+.image-container{  
+  width:100vw;  
+  height:100vh;  
+  display:flex;  
+  justify-content:center;  
+  align-items:center;  
+}  
+  
+.image-container img{  
+  width:100%;  
+  height:100%;  
+  object-fit:cover;  
+}  
+  
+/* Popup */  
+.popup{  
+  position:fixed;  
+  top:0;  
+  left:0;  
+  width:100%;  
+  height:100%;  
+  background:rgba(0,0,0,0.7);  
+  display:none;  
+  justify-content:center;  
+  align-items:center;  
+  z-index:999;  
+}  
+  
+.popup-content{  
+  background:#111;  
+  padding:20px;  
+  border-radius:15px;  
+  text-align:center;  
+  width:300px;  
+  border:1px solid #333;  
+}  
+  
+.popup h3{  
+  margin-bottom:15px;  
+  color:#38bdf8;  
+}  
+  
+/* أزرار */  
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+  
+.btn{  
+  padding:10px;  
+  border:none;  
+  border-radius:10px;  
+  cursor:pointer;  
+  font-weight:bold;  
+}  
+  
+.share{  
+  background:#38bdf8;  
+  color:#000;  
+}  
+  
+.download{  
+  background:#22c55e;  
+  color:#000;  
+}  
+  
+.cancel{  
+  background:#ef4444;  
+  color:#fff;  
+}  
+</style>  </head>  <body>  <header>  <!-- زر الرجوع (SVG فقط) -->  <button class="back-btn" onclick="goBack()" aria-label="رجوع">  
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none">  
+  <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" />  
+  <path d="M12 5L19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />  
+</svg>  
+</button>  <div class="title">بطاقة محسن</div>  <button class="share-btn" onclick="openPopup()">Share Card / مشاركة</button>
+
+</header>  <div class="image-container" id="card">  
+  <img src="t.png" alt="بطاقة عبدالله">  
+</div>  <!-- Popup -->  <div class="popup" id="popup">  
+  <div class="popup-content">  
+    <h3>مشاركة البطاقة كـ</h3>  <div class="actions">  
+  <button class="btn share" onclick="shareCard()">مشاركة</button>  
+  <button class="btn download" onclick="downloadCard()">تنزيل</button>  
+  <button class="btn cancel" onclick="closePopup()">إلغاء</button>  
+</div>
+  </div>  
+</div>  <script>  
+function openPopup(){  
+  document.getElementById('popup').style.display='flex';  
+}  
+  
+function closePopup(){  
+  document.getElementById('popup').style.display='none';  
+}  
+  
+function shareCard(){  
+  if(navigator.share){  
+    navigator.share({  
+      title:"بطاقة محسن",  
+      text:"شاهد هذه البطاقة",  
+      url:window.location.href  
+    });  
+  } else {  
+    alert("المشاركة غير مدعومة");  
+  }  
+}  
+  
+function downloadCard() {
+  html2canvas(document.getElementById("card"), {
+    useCORS: true,
+    scale: 1, // يقلل الجودة = أسرع
+    backgroundColor: null
+  }).then(canvas => {
+    let link = document.createElement("a");
+    link.download = "card.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+  
+/* الرجوع */  
+function goBack(){  
+  window.location.href = "index.html";  
+}  
+</script></body>  
+</html>
